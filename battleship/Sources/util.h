@@ -1,14 +1,20 @@
+#define LCD_DATA PORTK
+#define LCD_CTRL PORTK
+#define RS 0x01
+#define EN 0x02
+
+
 
 //Functions for Hex Keypad-------------------------------------------------------------------
 
 char hexKeypad(void){                          //OPEN MAIN
    
-   const unsigned char keypad_ascii[4][4] =
+  const unsigned char keypad_ascii[4][4] =
   {
-  '1','2','3','0',
-  '4','5','6','0',
-  '7','8','9','0',
-  '0','0','0','0'
+  1,2,3,0,
+  4,5,6,0,
+  7,8,9,0,
+  0,0,0,0
   };
   unsigned char column,row;
   
@@ -104,7 +110,7 @@ void COMWRT4(unsigned char command)
         unsigned char x;
         
         x = (command & 0xF0) >> 2;         //shift high nibble to center of byte for Pk5-Pk2
-      LCD_DATA =LCD_DATA & ~0x3C;          //clear bits Pk5-Pk2
+        LCD_DATA =LCD_DATA & ~0x3C;          //clear bits Pk5-Pk2
         LCD_DATA = LCD_DATA | x;          //sends high nibble to PORTK
         msDelay(1);
         LCD_CTRL = LCD_CTRL & ~RS;         //set RS to command (RS=0)
@@ -172,7 +178,7 @@ void lcdInit(void){
 }
 
 //Display predefined messages 1-7 on the LCD
-void dispLCD(unsigned int option){
+void dispLCD(unsigned char option){
  
   //Player 1 turn messages
         char p1Turn1[] = "Your turn!";
@@ -210,11 +216,7 @@ void dispLCD(unsigned int option){
         DATWRT4(*p1Turn1ptr);
         p1Turn1ptr++;
       }
-      COMWRT4(0xC0);
-      while(*p1Turn2ptr != 0){ //Enemy Ships: 
-        DATWRT4(*p1Turn2ptr);
-        p1Turn2ptr++;
-      }
+      
     } else if(option == 2){ //You hit a ship!
         while(*p1Hitptr != 0){
           DATWRT4(*p1Hitptr);
@@ -254,11 +256,8 @@ void dispLCD(unsigned int option){
           DATWRT4(*p2Turn1ptr);
         p2Turn1ptr++;
         }
-        COMWRT4(0xC0);
-        while(*p2Turn2ptr != 0){ //Your ships: 
-          DATWRT4(*p2Turn2ptr);
-          p2Turn2ptr++;
-        }
+        
      }
 
 }
+  

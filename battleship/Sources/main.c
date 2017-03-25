@@ -10,9 +10,20 @@
 #define CS          PTS_PTS7
 #define BAUD_375000 0x72  //375000 = 24M/((7+1)*2^(2+1))
 
+
 //prototypes
 void LED_enable(void);
 void msDelay(int);
+
+//LCD prototypes
+void COMWRT4(unsigned char);
+void DATWRT4(unsigned char);
+void dispLCD(char);
+void lcdInit(void);
+
+
+
+
 /* Not sure if protoypes for C functions are necessary
 void display(char r, char g, char b);
 void rainbow(void);

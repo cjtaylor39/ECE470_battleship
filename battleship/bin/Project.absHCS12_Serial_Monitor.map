@@ -1835,8 +1835,8 @@ UNUSED-OBJECTS SECTION
 ---------------------------------------------------------------------------------------------
 NOT USED PROCEDURES
 main.c.o:
-  hexKeypad SPIpause configureSPIs sendPixel display gradient rainbow 
-  displayBoard 
+  hexKeypad COMWRT4 DATWRT4 lcdInit dispLCD SPIpause configureSPIs sendPixel 
+  display gradient rainbow displayBoard 
 NOT USED VARIABLES
 main.c.o:
   board 
