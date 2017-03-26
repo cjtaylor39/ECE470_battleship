@@ -1,5 +1,6 @@
 #include <hidef.h>      /* common defines and macros */
 #include "derivative.h"      /* derivative-specific definitions */
+#include "util.h"
 
 //Macros for LED stuff
 #define UP    1
