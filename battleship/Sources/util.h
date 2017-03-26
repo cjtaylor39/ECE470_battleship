@@ -1,4 +1,6 @@
 
+//Functions for Hex Keypad-------------------------------------------------------------------
+
 char hexKeypad(void){                          //OPEN MAIN
    
    const unsigned char keypad_ascii[4][4] =
@@ -89,3 +91,174 @@ char hexKeypad(void){                          //OPEN MAIN
       return val;
    }                                      //CLOSE WHILE(1)
 }                                         //CLOSE MAIN
+
+
+
+
+//Functions for the LCD --------------------------------------------------------------------------------
+
+
+//Write command to the LCD
+void COMWRT4(unsigned char command)
+  {
+        unsigned char x;
+        
+        x = (command & 0xF0) >> 2;         //shift high nibble to center of byte for Pk5-Pk2
+      LCD_DATA =LCD_DATA & ~0x3C;          //clear bits Pk5-Pk2
+        LCD_DATA = LCD_DATA | x;          //sends high nibble to PORTK
+        msDelay(1);
+        LCD_CTRL = LCD_CTRL & ~RS;         //set RS to command (RS=0)
+        msDelay(1);
+        LCD_CTRL = LCD_CTRL | EN;          //raise enable
+        msDelay(5);
+        LCD_CTRL = LCD_CTRL & ~EN;         //Drop enable to capture command
+        msDelay(15);                       //wait
+        x = (command & 0x0F)<< 2;          // shift low nibble to center of byte for Pk5-Pk2
+        LCD_DATA =LCD_DATA & ~0x3C;         //clear bits Pk5-Pk2
+        LCD_DATA =LCD_DATA | x;             //send low nibble to PORTK
+        LCD_CTRL = LCD_CTRL | EN;          //raise enable
+        msDelay(5);
+        LCD_CTRL = LCD_CTRL & ~EN;         //drop enable to capture command
+        msDelay(15);
+  }
+
+//Write data to the LCD
+void DATWRT4(unsigned char data)
+  {
+  unsigned char x;
+         
+        
+        x = (data & 0xF0) >> 2;
+        LCD_DATA =LCD_DATA & ~0x3C;                     
+        LCD_DATA = LCD_DATA | x;
+        msDelay(1);
+        LCD_CTRL = LCD_CTRL | RS;
+        msDelay(1);
+        LCD_CTRL = LCD_CTRL | EN;
+        msDelay(1);
+        LCD_CTRL = LCD_CTRL & ~EN;
+        msDelay(5);
+       
+        x = (data & 0x0F)<< 2;
+        LCD_DATA =LCD_DATA & ~0x3C;                     
+        LCD_DATA = LCD_DATA | x;
+        LCD_CTRL = LCD_CTRL | EN;
+        msDelay(1);
+        LCD_CTRL = LCD_CTRL & ~EN;
+        msDelay(15);
+  }
+
+//Initialize the LCD  
+void lcdInit(void){
+
+        DDRK = 0xFF;   
+        COMWRT4(0x33);   //reset sequence provided by data sheet
+        msDelay(1);
+        COMWRT4(0x32);   //reset sequence provided by data sheet
+        msDelay(1);
+        COMWRT4(0x28);   //Function set to four bit data length
+                                         //2 line, 5 x 7 dot format
+        msDelay(1);
+        COMWRT4(0x06);  //entry mode set, increment, no shift
+        msDelay(1);
+        COMWRT4(0x0E);  //Display set, disp on, cursor on, blink off
+        msDelay(1);
+        COMWRT4(0x01);  //Clear display
+        msDelay(1);
+        COMWRT4(0x80);  //set start posistion, home position
+        msDelay(1);
+
+
+}
+
+//Display predefined messages 1-7 on the LCD
+void dispLCD(unsigned int option){
+ 
+  //Player 1 turn messages
+        char p1Turn1[] = "Your turn!";
+        char* p1Turn1ptr = &p1Turn1;
+        char p1Turn2[] = "Enemy Ships: ";
+        char* p1Turn2ptr = &p1Turn2;
+        
+        char p1Hit[] = "You hit a ship!";
+        char* p1Hitptr = &p1Hit;
+        
+        char p1Miss[] = "You missed!";
+        char* p1Missptr = &p1Miss;
+        
+        char p1Win[] = "You win!";
+        char* p1Winptr = &p1Win;
+        
+        char p1Lose[] = "You lose!";
+        char* p1Loseptr = &p1Lose;
+        
+  //player 2 turn messages        
+        char p2Hit1[] = "Your ship was";
+        char* p2Hit1ptr = &p2Hit1;
+        char p2Hit2[] = "hit!";
+        char* p2Hit2ptr = &p2Hit2;
+        
+        char p2Turn1[] = "Enemy turn!";
+        char* p2Turn1ptr = &p2Turn1;
+        
+        char p2Turn2[] = "Your ships: ";
+        char* p2Turn2ptr = &p2Turn2;
+
+ 
+    if(option == 1){  //Your turn!
+      while(*p1Turn1ptr != 0){
+        DATWRT4(*p1Turn1ptr);
+        p1Turn1ptr++;
+      }
+      COMWRT4(0xC0);
+      while(*p1Turn2ptr != 0){ //Enemy Ships: 
+        DATWRT4(*p1Turn2ptr);
+        p1Turn2ptr++;
+      }
+    } else if(option == 2){ //You hit a ship!
+        while(*p1Hitptr != 0){
+          DATWRT4(*p1Hitptr);
+        p1Hitptr++;
+        }
+       
+     } else if(option == 3){ //You missed!
+        while(*p1Missptr != 0){
+          DATWRT4(*p1Missptr);
+        p1Missptr++;
+        }
+        
+     } else if(option == 4){ //You win!
+        while(*p1Winptr != 0){
+          DATWRT4(*p1Winptr);
+        p1Winptr++;
+        }
+        
+     } else if(option == 5){ //You lose!
+        while(*p1Loseptr != 0){
+          DATWRT4(*p1Loseptr);
+        p1Loseptr++;
+        }
+        
+     } else if(option == 6){ //Your ship was
+        while(*p2Hit1ptr != 0){
+          DATWRT4(*p2Hit1ptr);
+        p2Hit1ptr++;
+        }
+        COMWRT4(0xC0);
+        while(*p2Hit2ptr != 0){ //hit!
+          DATWRT4(*p2Hit2ptr);
+          p2Hit2ptr++;
+        }
+     } else if(option == 7){ //Enemy turn!
+        while(*p2Turn1ptr != 0){
+          DATWRT4(*p2Turn1ptr);
+        p2Turn1ptr++;
+        }
+        COMWRT4(0xC0);
+        while(*p2Turn2ptr != 0){ //Your ships: 
+          DATWRT4(*p2Turn2ptr);
+          p2Turn2ptr++;
+        }
+     }
+
+}
