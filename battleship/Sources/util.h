@@ -1,11 +1,42 @@
+//Header file containing prototypes and globals of misc fucntions
+
+//LCD Macros
 #define LCD_DATA PORTK
 #define LCD_CTRL PORTK
 #define RS 0x01
 #define EN 0x02
 
+//Utility Assembly Functions---------------------------------------------------
+
+//enableLED--------------------------------------------------------------------
+// Initialize LEDs as display on dragon board
+// Arguments: 	none
+// Output:		none
+extern void enableLED(void);
+
+//msDelay--------------------------------------------------------------------
+// Creates delay of specified milliseconds
+// Arguments:	number of ms to be delayed
+// Output: 		none
+extern void msDelay(int);
+
+//clockSet--------------------------------------------------------------------
+// Sets up PPL to achieve 24Mhz always
+// Arguments:	none
+// Output: 		none
+extern void clockSet(void);
+
+//MOVED TO PIXELS.C
+
+//sendByte--------------------------------------------------------------------
+// Sends 
+// Arguments: 	int number of ms to be delayed
+// Output: 		none
+//extern void sendByte(char);
 
 
-//Functions for Hex Keypad-------------------------------------------------------------------
+//ALL THESE NEED TO BE MOVED TO A .C FILE, THEIR PROTOTYPES WILL REMAIN HERE (SEE ABOVE)
+//Functions for Hex Keypad-----------------------------------------------------
 
 char hexKeypad(void){                          //OPEN MAIN
    
@@ -258,6 +289,7 @@ void dispLCD(unsigned char option){
         }
         
      }
-
 }
-  
+ 
+//Functions for Hex Keypad-----------------------------------------------------
+ 
