@@ -5,18 +5,18 @@
 #include "util.h"
 #include "mc9s12dg256.h"
 
-//enableLED--------------------------------------------------------------------
+//enableLEDs--------------------------------------------------------------------
 // Initialize LEDs as display on dragon board
 // Arguments: 	none
 // Output:		none
-void enableLED(void){
+void enableLEDs(void){
 	asm {
-	BSET DDRJ, BIT1   ; config PJ1 as output pin
-    BCLR PTJ,  BIT1   ; drive PJ1 low
-          
+  	BSET DDRJ, #$02   ; config PJ1 as output pin
+    BCLR PTJ,  #$02   ; drive PJ1 low
+            
     MOVB #$FF, DDRB   ; config PB7-PB0 as output pins
     CLR PORTB         ; starts off
-	RTS
+  	RTS
 	}
 }
 
@@ -24,7 +24,7 @@ void enableLED(void){
 // Creates delay of specified milliseconds
 // Arguments:	number of ms to be delayed
 // Output: 		none
-void msDelay(int) {
+void msDelay(int ms) {
 	asm {
 		msDelay:                                    
 			    PSHX              ;2  clock cycles
@@ -38,6 +38,7 @@ void msDelay(int) {
  	        RTS               ;5 
 	}
 }
+
 
 //clockSet--------------------------------------------------------------------
 // Sets up PPL to achieve 24Mhz always

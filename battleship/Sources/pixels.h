@@ -20,7 +20,7 @@ extern void display(char r, char g, char b);
 // Displays battleship board based on global "board"
 // Arguments:	8bit value for red, 8bit value for green, 8bit value for blue,
 // Return:		none
-extern interrupt SWI void displayBoard(char** board);
+extern interrupt SWI void displayBoard(char board[8][8]);
 
 //ASSEMBLY FUNCTION
 

@@ -8,11 +8,11 @@
 
 //Utility Assembly Functions---------------------------------------------------
 
-//enableLED--------------------------------------------------------------------
+//enableLEDs--------------------------------------------------------------------
 // Initialize LEDs as display on dragon board
 // Arguments: 	none
 // Output:		none
-extern void enableLED(void);
+extern void enableLEDs(void);
 
 //msDelay--------------------------------------------------------------------
 // Creates delay of specified milliseconds
@@ -25,14 +25,6 @@ extern void msDelay(int);
 // Arguments:	none
 // Output: 		none
 extern void clockSet(void);
-
-//MOVED TO PIXELS.C
-
-//sendByte--------------------------------------------------------------------
-// Sends 
-// Arguments: 	int number of ms to be delayed
-// Output: 		none
-//extern void sendByte(char);
 
 
 //ALL THESE NEED TO BE MOVED TO A .C FILE, THEIR PROTOTYPES WILL REMAIN HERE (SEE ABOVE)

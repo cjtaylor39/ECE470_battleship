@@ -1,5 +1,5 @@
 
-      XDEF msDelay, LED_enable, sendByte
+      XDEF msDelay, enableLEDs, sendByte
       
 
   Include 'mc9s12dg256.inc'
@@ -15,7 +15,7 @@ BIT1:   EQU %00000010
 ; Affected Registers
 ;   None
 ;******************************************
-LED_enable:
+enableLEDs:
           BSET DDRJ, BIT1   ; config PJ1 as output pin
           BCLR PTJ,  BIT1   ; drive PJ1 low
           

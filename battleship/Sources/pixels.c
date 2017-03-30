@@ -27,12 +27,11 @@ void display(char r, char g, char b) {
   msDelay(10);  
 }
 
-//MIGHT NEED TO CHANGE FROM GLOBAL TO POINTER, FOR MULTIPLE BOARD DISPLAY
 //displayBoard--------------------------------------------------------------------
 // Displays battleship board based on global "board"
 // Arguments:	8bit value for red, 8bit value for green, 8bit value for blue,
 // Return:		none
-interrupt SWI void displayBoard(char** board) {
+interrupt SWI void displayBoard(char board[8][8]) {
   int i = 0;
   int j = 0;
   for(i = 0; i<8;i++) {
@@ -44,7 +43,7 @@ interrupt SWI void displayBoard(char** board) {
         sendPixel(0,0,10);  //boat space  
       }
       else if(board[i][j] == 3) {
-        sendPixel(0,4,10);    //miss space
+        sendPixel(0,10,0);    //miss space
       }
       else
         sendPixel(0,2,10);    //hit space  
@@ -53,6 +52,7 @@ interrupt SWI void displayBoard(char** board) {
   msDelay(5);
 }
 
+
 //ASSEMBLY FUNCTION
 
 //sendByte--------------------------------------------------------------------
@@ -60,18 +60,18 @@ interrupt SWI void displayBoard(char** board) {
 // Arguments:	number of ms to be delayed
 // Return:		none
 void sendByte(char bite){
-	asm { 
-              LDAA #08 		  ;B contains the char to be sent out serially   		
-      next:   CMPB #00    	;Count of bits	
-              BMI send1     ;Bring B back in focus	
-              BRA send0     ;Check if MSB is 0 or 1
+	__asm {                   ;B contains the char to be sent out serially   		
+              LDAA #8 		  ;Count of bits
+      next:   CMPB #0    	  ;Bring B back into focus for CCR	
+              BMI send1     ;Check if MSB is 0 or 1	
+              BRA send0
    
       back:   LSLB
               DECA        
               BNE next
               RTS
 
-      send1:  BSET PORTB, #01          
+      send1:  BSET PORTB, #1          
               NOP
               NOP
               NOP
@@ -85,16 +85,16 @@ void sendByte(char bite){
               NOP
               NOP
               NOP             	;High pulse of 706ns
-              BCLR PORTB, #01
+              BCLR PORTB, #1
               BRA back             
               
-      send0:  BSET PORTB, #01
+      send0:  BSET PORTB, #1
               NOP
               NOP
               NOP
               NOP
               NOP              ;High pulse of 375ns
-              BCLR PORTB, #01
+              BCLR PORTB, #1
               BRA back                         
               
               ;After RTS and assuming we are entering another
