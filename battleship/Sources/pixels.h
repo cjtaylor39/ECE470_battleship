@@ -15,12 +15,12 @@ extern void sendPixel(unsigned char r, unsigned char g, unsigned char b);
 // Return:		none
 extern void display(char r, char g, char b);
 
-//MIGHT NEED TO CHANGE FROM GLOBAL TO POINTER, FOR MULTIPLE BOARD DISPLAY
+//HAVENT TESTED USING THE POINTER TO PASS IN BOARD YET
 //displayBoard--------------------------------------------------------------------
 // Displays battleship board based on global "board"
 // Arguments:	8bit value for red, 8bit value for green, 8bit value for blue,
 // Return:		none
-extern interrupt SWI void displayBoard(void);
+extern interrupt SWI void displayBoard(char** board);
 
 //ASSEMBLY FUNCTION
 

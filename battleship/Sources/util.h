@@ -36,6 +36,7 @@ extern void clockSet(void);
 
 
 //ALL THESE NEED TO BE MOVED TO A .C FILE, THEIR PROTOTYPES WILL REMAIN HERE (SEE ABOVE)
+/*
 //Functions for Hex Keypad-----------------------------------------------------
 
 char hexKeypad(void){                          //OPEN MAIN
@@ -292,4 +293,4 @@ void dispLCD(unsigned char option){
 }
  
 //Functions for Hex Keypad-----------------------------------------------------
- 
+*/ 

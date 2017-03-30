@@ -3,6 +3,8 @@
 #include <hidef.h>      /* common defines and macros */
 #include "derivative.h"      /* derivative-specific definitions */
 #include "pixels.h"
+#include "util.h"
+
 
 //sendPixel--------------------------------------------------------------------
 // Turns specific neopixel specified color
@@ -30,7 +32,7 @@ void display(char r, char g, char b) {
 // Displays battleship board based on global "board"
 // Arguments:	8bit value for red, 8bit value for green, 8bit value for blue,
 // Return:		none
-interrupt SWI void displayBoard(void) {
+interrupt SWI void displayBoard(char** board) {
   int i = 0;
   int j = 0;
   for(i = 0; i<8;i++) {
@@ -57,13 +59,12 @@ interrupt SWI void displayBoard(void) {
 // Sends 
 // Arguments:	number of ms to be delayed
 // Return:		none
-void sendByte(char){
-	asm {
-		sendByte:         		;B contains the char to be sent out serially
-              LDAA #08    		;Count of bits
-      next:   CMPB #00    		;Bring B back in focuse
-              BMI send1     	;Check if MSB is 0 or 1
-              BRA send0
+void sendByte(char bite){
+	asm { 
+              LDAA #08 		  ;B contains the char to be sent out serially   		
+      next:   CMPB #00    	;Count of bits	
+              BMI send1     ;Bring B back in focus	
+              BRA send0     ;Check if MSB is 0 or 1
    
       back:   LSLB
               DECA        

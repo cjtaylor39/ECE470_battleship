@@ -1,7 +1,9 @@
 #include <hidef.h>      /* common defines and macros */
 #include "derivative.h"      /* derivative-specific definitions */
 #include "util.h"
-
+#include "pixels.h"
+#include "spi.h"
+/*
 //Macros for LED stuff
 #define UP    1
 #define DOWN  0
@@ -22,7 +24,7 @@ void dispLCD(char);
 void lcdInit(void);
 
 
-
+*/
 
 /* Not sure if protoypes for C functions are necessary
 void display(char r, char g, char b);
@@ -40,7 +42,8 @@ char board[64] = {0,0,0,0,0,0,0,0,
                   1,1,1,1,1,1,1,1,
                   2,2,2,2,2,2,2,2,
                   3,3,3,3,3,3,3,3};
-//Use SPI0 as master  
+/*
+				  //Use SPI0 as master  
 void configureSPIm(void) {
   DDRS |= 0xE0; // SS, SCLK, MOSI outputs
   DDRS &= 0xEF; //MISO as input
@@ -159,10 +162,10 @@ void displayBoard(void) {
   }
   msDelay(5);
 }
-
+*/
 void main(void){  //might remove if only 1 displaying function
   char data = 0x01; //data to be sent out
-  LED_enable();
+  enableLED();
   DDRH = 0x00;
   configureSPIm();
   

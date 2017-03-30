@@ -3,6 +3,7 @@
 #include <hidef.h>      /* common defines and macros */
 #include "derivative.h"      /* derivative-specific definitions */
 #include "util.h"
+#include "mc9s12dg256.h"
 
 //enableLED--------------------------------------------------------------------
 // Initialize LEDs as display on dragon board
@@ -26,15 +27,15 @@ void enableLED(void){
 void msDelay(int) {
 	asm {
 		msDelay:                                    
-			PSHX              ;    2  clock cycles
+			    PSHX              ;2  clock cycles
 		Outer: 
-            LDX  #7995        ;    2     
+          LDX  #7995        ;2     
 		Inner: 
-            DBNE X, Inner     ;    3/3    ( 3 cycles both ways)
+          DBNE X, Inner     ;3/3    ( 3 cycles both ways)
 	          
-	        DBNE D, Outer     ;     3/3
-            PULX              ;     3 
- 	        RTS               ;    5 
+	        DBNE D, Outer     ;3/3
+          PULX              ;3 
+ 	        RTS               ;5 
 	}
 }
 
