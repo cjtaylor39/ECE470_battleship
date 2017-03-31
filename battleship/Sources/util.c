@@ -52,3 +52,5 @@ void clockSet(void) {
 	while(!(0x08 & CRGFLG));   //wait until PLL locks to the desired frequency
 	CLKSEL |= 0x80;	//Use PLL now
 }
+
+//Keypad & LCD Stuff below
