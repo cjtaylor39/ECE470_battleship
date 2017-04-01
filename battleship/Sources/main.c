@@ -50,18 +50,22 @@ void main(void){
   char attack[8][8] = {0};
   
   //Sending coordinates stuff
-  int hit_count = 0;
+  int my_hit_count = 0;
+  int enemy_hit_count = 0;
   char save1 = 0;      //Coordinate contents to be remembered
   char select = 0;     //HexKeypad Coordinate
   char send_coord = 0; //Byte to be sent
-  unsigned char x=3;   //x component of moving pixel
-  unsigned char y=3;   //y component of moving pixel
+  unsigned char x = 3;   //x component of moving pixel in center of board
+  unsigned char y = 3;   //y component of moving pixel in center of board
+  
+  char x_defense = 0;
+  char y_defense = 0;
   char hit_miss = 0;    //byte returned from other board signifying hit/miss/gameover
   
   //char* def_ptr_small;
   //char* def_ptr_large;
   
-  state_type state = ATTACK; 
+  state_type state; 
   unsigned char dataIn = 0;
   unsigned char dataOut = 0;
  
@@ -70,6 +74,14 @@ void main(void){
   DDRH = 0x00;     
   lcdInit();
   configureSCI();
+  
+  //Configure initial state
+  if ((PTH & 0x80) == 0x80) { //SW1 of PTH is up
+    state = ATTACK;
+  }
+  else {
+    state = DEFEND;      
+  }
   
   //Generate Random Defense Matrix
   //def_ptr_small = &defense[0][0];
@@ -144,12 +156,12 @@ void main(void){
        hit_miss = receiveByteSCI();
        
        //LCD displays hit/miss/gg
-       if (hit_miss == HITMSG) {
+       if (hit_miss == HIT) {
           attack[x][y] = HIT;
           dispLCD(HIT);
-          hit_count++;   
+          my_hit_count++;   
        }
-       else if(hit_miss == MISSMSG) {
+       else if(hit_miss == MISS) {
           attack[x][y] = MISS;
           dispLCD(MISS);
        }
@@ -163,15 +175,50 @@ void main(void){
        msDelay(3000);
        //Your turn to defend
        
-       if (hit_count != 12) { 
-          state = DEFEND; 
+       if (my_hit_count != 12) { 
+          state = DEFEND;
        }
        else { 
           state = WIN; 
        }
   }
   
+  while(state == DEFEND) {
+    
+    dispLCD(7);
+    displayBoard(defense);
+    dataIn = receiveByteSCI();
 
+    while(dataIn == 0xFF){
+      
+    dataIn = receiveByteSCI();
+    PORTB = dataIn;
+    }
+    x_defense = ((dataIn & 0xF0) >> 4);
+    y_defense = (dataIn & 0x0F);
+
+        if ((defense[x_defense][y_defense] == 0) | ((defense[x_defense][y_defense]) == 9)){      // 0 - nothing not hit yet
+			    sendByteSCI(MISS);                                                 // 1 - ship not hit
+          defense[x_defense][y_defense] = MISS;
+                                                 // 2 - MISS
+        } else{                                                  // 3 - ship hit
+        //send 1
+         defense[x_defense][y_defense] = HIT;
+         sendByteSCI(HIT);
+         enemy_hit_count++; 
+         //display LED grid
+        }
+    displayBoard(defense);
+    msDelay(3000);
+    
+    if (enemy_hit_count != 12) { 
+          state = DEFEND;
+     }
+     else { 
+        state = WIN; 
+     }
+      
+  }
 }
 
 

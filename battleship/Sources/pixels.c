@@ -52,7 +52,7 @@ void displayBoard(char board[8][8]) {
         sendPixel(0,10,0);   
       }
       else if(board[i][j] == CURSOR){
-        sendPixel(10,10,0);    
+        sendPixel(10,0,8);    
       }
     }
   }

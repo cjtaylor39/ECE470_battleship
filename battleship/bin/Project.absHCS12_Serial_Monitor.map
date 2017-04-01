@@ -15,8 +15,6 @@ FILE SECTION
 mc9s12dg256.c.o                         Model: SMALL,         Lang: ANSI-C
 main.c.o                                Model: SMALL,         Lang: ANSI-C
 Start12.c.o                             Model: SMALL,         Lang: ANSI-C
-STDLIB.C.o (ansisi.lib)                 Model: SMALL,         Lang: ANSI-C
-rtshc12.c.o (ansisi.lib)                Model: SMALL,         Lang: ANSI-C
 pixels.c.o                              Model: SMALL,         Lang: ANSI-C
 util.c.o                                Model: SMALL,         Lang: ANSI-C
 sci.c.o                                 Model: SMALL,         Lang: ANSI-C
@@ -28,8 +26,8 @@ Entry point: 0xC029 (_Startup)
 _startupData is allocated at 0xC03B and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
-  _Range   pZeroOut       0x1100     4
-  _Copy    *toCopyDownBeg 0xCD7B
+  _Range   pZeroOut       0x1100     64
+  _Copy    *toCopyDownBeg 0xC8D8
 } _startupData;
 
 *********************************************************************************************
@@ -38,10 +36,10 @@ Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
 .init                             59     R     0xC000     0xC03A   ROM_C000
 .startData                        10     R     0xC03B     0xC044   ROM_C000
-.text                           3038     R     0xC045     0xCC22   ROM_C000
-.copy                              7     R     0xCD7B     0xCD81   ROM_C000
+.text                           2195     R     0xC045     0xC8D7   ROM_C000
+.copy                             30     R     0xC8D8     0xC8F5   ROM_C000
 .stack                           256   R/W     0x1000     0x10FF   RAM
-.data                              4   R/W     0x1100     0x1103   RAM
+.data                             64   R/W     0x1100     0x113F   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
 .abs_section_a                     1   N/I        0xA        0xA   .absSeg2
@@ -383,13 +381,11 @@ Section Name                    Size  Type     From       To       Segment
 .abs_section_17e                   2   N/I      0x17E      0x17F   .absSeg338
 .abs_section_2ae                   2   N/I      0x2AE      0x2AF   .absSeg339
 .abs_section_2be                   2   N/I      0x2BE      0x2BF   .absSeg340
-.abs_section_fff4                  2     R     0xFFF4     0xFFF5   .absSeg341
-RUNTIME                          344     R     0xCC23     0xCD7A   ROM_C000
-.vectSeg342_vect                   2     R     0xFFFE     0xFFFF   .vectSeg342
+.vectSeg341_vect                   2     R     0xFFFE     0xFFFF   .vectSeg341
 
 Summary of section sizes per section type:
-READ_ONLY (R):         D86 (dec:     3462)
-READ_WRITE (R/W):      104 (dec:      260)
+READ_ONLY (R):         8F8 (dec:     2296)
+READ_WRITE (R/W):      140 (dec:      320)
 NO_INIT (N/I):         190 (dec:      400)
 
 *********************************************************************************************
@@ -482,10 +478,10 @@ MODULE:                 -- mc9s12dg256.c.o --
      _PWMSDN                                     C4       1       1       0   .abs_section_c4
      _SCI0CR1                                    CA       1       1       1   .abs_section_ca
      _SCI0CR2                                    CB       1       1       1   .abs_section_cb
-     _SCI0SR1                                    CC       1       1       0   .abs_section_cc
+     _SCI0SR1                                    CC       1       1       2   .abs_section_cc
      _SCI0SR2                                    CD       1       1       0   .abs_section_cd
      _SCI0DRH                                    CE       1       1       0   .abs_section_ce
-     _SCI0DRL                                    CF       1       1       0   .abs_section_cf
+     _SCI0DRL                                    CF       1       1       2   .abs_section_cf
      _SCI1CR1                                    D2       1       1       0   .abs_section_d2
      _SCI1CR2                                    D3       1       1       0   .abs_section_d3
      _SCI1SR1                                    D4       1       1       0   .abs_section_d4
@@ -614,7 +610,7 @@ MODULE:                 -- mc9s12dg256.c.o --
      _PPSP                                      25D       1       1       0   .abs_section_25d
      _PIEP                                      25E       1       1       0   .abs_section_25e
      _PIFP                                      25F       1       1       0   .abs_section_25f
-     _PTH                                       260       1       1       0   .abs_section_260
+     _PTH                                       260       1       1       1   .abs_section_260
      _PTIH                                      261       1       1       0   .abs_section_261
      _DDRH                                      262       1       1       1   .abs_section_262
      _RDRH                                      263       1       1       0   .abs_section_263
@@ -687,7 +683,7 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXDSR7                                2BB       1       1       0   .abs_section_2bb
      _CAN4TXDLR                                 2BC       1       1       0   .abs_section_2bc
      _CAN4TXTBPR                                2BD       1       1       0   .abs_section_2bd
-     _PORTAB                                      0       2       2      17   .abs_section_0
+     _PORTAB                                      0       2       2      19   .abs_section_0
      _DDRAB                                       2       2       2       3   .abs_section_2
      _PARTID                                     1A       2       2       0   .abs_section_1a
      _TCNT                                       44       2       2       0   .abs_section_44
@@ -748,8 +744,9 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     main                                      C045     3E3     995       8   .text       
+     main                                      C045     30C     780      23   .text       
 - VARIABLES:
+     defense                                   1100      40      64       5   .data       
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
      Init                                      C000      29      41       1   .init       
@@ -758,42 +755,27 @@ MODULE:                 -- Start12.c.o --
      _startupData                              C03B       6       6       3   .startData  
 - LABELS:
      __SEG_END_SSTACK                          1100       0       0       1               
-MODULE:                 -- STDLIB.C.o (ansisi.lib) --
-- PROCEDURES:
-     rand                                      C428      72     114       5   .text       
-- VARIABLES:
-     seed                                      1100       4       4      12   .data       
-MODULE:                 -- rtshc12.c.o (ansisi.lib) --
-- PROCEDURES:
-     _LNEG                                     CC23       D      13       1   RUNTIME     
-     _LMULS16x32                               CC30      1F      31       2   RUNTIME     
-     _lDivMod                                  CC4F      BE     190       4   RUNTIME     
-     _NEG_P                                    CD0D       F      15       7   RUNTIME     
-     _LDIVS                                    CD1C      35      53       1   RUNTIME     
-     _LMODS                                    CD51      2A      42       1   RUNTIME     
-- VARIABLES:
 MODULE:                 -- pixels.c.o --
 - PROCEDURES:
-     sendPixel                                 C49A      12      18       1   .text       
-     displayBoard                              C4AC      55      85       4   .text       
-     sendByte                                  C501      2F      47       3   .text       
+     sendPixel                                 C351      12      18       1   .text       
+     displayBoard                              C363      71     113       4   .text       
+     sendByte                                  C3D4      2F      47       3   .text       
 - VARIABLES:
-     _Vector_5                                 FFF4       2       2       0   .abs_section_fff4
 MODULE:                 -- util.c.o --
 - PROCEDURES:
-     enableLEDs                                C530      12      18       1   .text       
-     msDelay                                   C542       D      13      11   .text       
-     hexKeypad                                 C54F      D7     215       1   .text       
-     COMWRT4                                   C626      49      73       4   .text       
-     DATWRT4                                   C66F      4A      74       1   .text       
-     lcdInit                                   C6B9      31      49       1   .text       
-     dispLCD                                   C6EA     2F5     757       4   .text       
-     shipSum                                   C9DF      5B      91       2   .text       
-     matrixBuild                               CA3A     1D3     467      12   .text       
+     enableLEDs                                C403      12      18       1   .text       
+     msDelay                                   C415       D      13      14   .text       
+     hexKeypad                                 C422      D7     215       1   .text       
+     COMWRT4                                   C4F9      49      73       4   .text       
+     DATWRT4                                   C542      4A      74       1   .text       
+     lcdInit                                   C58C      31      49       1   .text       
+     dispLCD                                   C5BD     2F5     757       6   .text       
 - VARIABLES:
 MODULE:                 -- sci.c.o --
 - PROCEDURES:
-     configureSCI                              CC0D      16      22       1   .text       
+     configureSCI                              C8B2      16      22       1   .text       
+     sendByteSCI                               C8C8       9       9       3   .text       
+     receiveByteSCI                            C8D1       7       7       3   .text       
 - VARIABLES:
 
 *********************************************************************************************
@@ -801,23 +783,21 @@ MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12dg256.c.o                            400      0      0
-  main.c.o                                     0    995      0
+  main.c.o                                    64    780      0
   Start12.c.o                                  0     59      0
-  STDLIB.C.o (ansisi.lib)                      4    114      0
-  rtshc12.c.o (ansisi.lib)                     0    344      0
-  pixels.c.o                                   0    150      2
-  util.c.o                                     0   1757      0
-  sci.c.o                                      0     22      0
-  other                                      256     12      7
+  pixels.c.o                                   0    178      0
+  util.c.o                                     0   1199      0
+  sci.c.o                                      0     38      0
+  other                                      256     12     30
 
 *********************************************************************************************
 SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
-  main rand sendPixel displayBoard sendByte enableLEDs msDelay hexKeypad 
-  COMWRT4 DATWRT4 lcdInit dispLCD shipSum matrixBuild configureSCI 
+  main sendPixel displayBoard sendByte enableLEDs msDelay hexKeypad COMWRT4 
+  DATWRT4 lcdInit dispLCD configureSCI sendByteSCI receiveByteSCI 
 SECTION: ".data"
-  seed 
+  defense 
 SECTION: ".init"
   Init _Startup 
 SECTION: ".abs_section_8"
@@ -1502,16 +1482,12 @@ SECTION: ".abs_section_2ae"
   _CAN4RXTSR 
 SECTION: ".abs_section_2be"
   _CAN4TXTSR 
-SECTION: "RUNTIME"
-  _LNEG _LMULS16x32 _lDivMod _NEG_P _LDIVS _LMODS 
-SECTION: ".abs_section_fff4"
-  _Vector_5 
 
 *********************************************************************************************
 OBJECT LIST SORTED BY ADDRESS
      Name                                      Addr   hSize   dSize     Ref    Section   RLIB
 ---------------------------------------------------------------------------------------------
-     _PORTAB                                      0       2       2      17   .abs_section_0
+     _PORTAB                                      0       2       2      19   .abs_section_0
      _DDRAB                                       2       2       2       3   .abs_section_2
      _PORTE                                       8       1       1       0   .abs_section_8
      _DDRE                                        9       1       1       0   .abs_section_9
@@ -1632,10 +1608,10 @@ OBJECT LIST SORTED BY ADDRESS
      _SCI0BD                                     C8       2       2       2   .abs_section_c8
      _SCI0CR1                                    CA       1       1       1   .abs_section_ca
      _SCI0CR2                                    CB       1       1       1   .abs_section_cb
-     _SCI0SR1                                    CC       1       1       0   .abs_section_cc
+     _SCI0SR1                                    CC       1       1       2   .abs_section_cc
      _SCI0SR2                                    CD       1       1       0   .abs_section_cd
      _SCI0DRH                                    CE       1       1       0   .abs_section_ce
-     _SCI0DRL                                    CF       1       1       0   .abs_section_cf
+     _SCI0DRL                                    CF       1       1       2   .abs_section_cf
      _SCI1BD                                     D0       2       2       0   .abs_section_d0
      _SCI1CR1                                    D2       1       1       0   .abs_section_d2
      _SCI1CR2                                    D3       1       1       0   .abs_section_d3
@@ -1777,7 +1753,7 @@ OBJECT LIST SORTED BY ADDRESS
      _PPSP                                      25D       1       1       0   .abs_section_25d
      _PIEP                                      25E       1       1       0   .abs_section_25e
      _PIFP                                      25F       1       1       0   .abs_section_25f
-     _PTH                                       260       1       1       0   .abs_section_260
+     _PTH                                       260       1       1       1   .abs_section_260
      _PTIH                                      261       1       1       0   .abs_section_261
      _DDRH                                      262       1       1       1   .abs_section_262
      _RDRH                                      263       1       1       0   .abs_section_263
@@ -1852,31 +1828,23 @@ OBJECT LIST SORTED BY ADDRESS
      _CAN4TXDLR                                 2BC       1       1       0   .abs_section_2bc
      _CAN4TXTBPR                                2BD       1       1       0   .abs_section_2bd
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
-     seed                                      1100       4       4      12   .data       
+     defense                                   1100      40      64       5   .data       
      Init                                      C000      29      41       1   .init       
      _Startup                                  C029      12      18       0   .init       
-     main                                      C045     3E3     995       8   .text       
-     rand                                      C428      72     114       5   .text       
-     sendPixel                                 C49A      12      18       1   .text       
-     displayBoard                              C4AC      55      85       4   .text       
-     sendByte                                  C501      2F      47       3   .text       
-     enableLEDs                                C530      12      18       1   .text       
-     msDelay                                   C542       D      13      11   .text       
-     hexKeypad                                 C54F      D7     215       1   .text       
-     COMWRT4                                   C626      49      73       4   .text       
-     DATWRT4                                   C66F      4A      74       1   .text       
-     lcdInit                                   C6B9      31      49       1   .text       
-     dispLCD                                   C6EA     2F5     757       4   .text       
-     shipSum                                   C9DF      5B      91       2   .text       
-     matrixBuild                               CA3A     1D3     467      12   .text       
-     configureSCI                              CC0D      16      22       1   .text       
-     _LNEG                                     CC23       D      13       1   RUNTIME     
-     _LMULS16x32                               CC30      1F      31       2   RUNTIME     
-     _lDivMod                                  CC4F      BE     190       4   RUNTIME     
-     _NEG_P                                    CD0D       F      15       7   RUNTIME     
-     _LDIVS                                    CD1C      35      53       1   RUNTIME     
-     _LMODS                                    CD51      2A      42       1   RUNTIME     
-     _Vector_5                                 FFF4       2       2       0   .abs_section_fff4
+     main                                      C045     30C     780      23   .text       
+     sendPixel                                 C351      12      18       1   .text       
+     displayBoard                              C363      71     113       4   .text       
+     sendByte                                  C3D4      2F      47       3   .text       
+     enableLEDs                                C403      12      18       1   .text       
+     msDelay                                   C415       D      13      14   .text       
+     hexKeypad                                 C422      D7     215       1   .text       
+     COMWRT4                                   C4F9      49      73       4   .text       
+     DATWRT4                                   C542      4A      74       1   .text       
+     lcdInit                                   C58C      31      49       1   .text       
+     dispLCD                                   C5BD     2F5     757       6   .text       
+     configureSCI                              C8B2      16      22       1   .text       
+     sendByteSCI                               C8C8       9       9       3   .text       
+     receiveByteSCI                            C8D1       7       7       3   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -1884,38 +1852,39 @@ UNUSED-OBJECTS SECTION
 NOT USED PROCEDURES
 main.c.o:
   transition 
-STDLIB.C.o (ansisi.lib):
-  atexit getenv system mblen mbtowc wctomb mbstowcs wcstombs CheckCharWithBase 
-  _strtoul strtoul _strtol strtol _itoa bsearch swap qsort div ldiv abs labs 
-  srand 
-rtshc12.c.o (ansisi.lib):
-  _BSHL _BSHRS _BSHRU _BDIVMODU _BDIVMODS _ISHL _ISHRU _ISHRS _LSHL _LSHRU 
-  _LSHRS _LADD _LSUB _LAND _LOR _LXOR _LCMP _LCMP_P _LCMP_PP _LCOM _LINC _LDEC 
-  _LMUL _LMULU16x32 _LDIVU _LMODU _ILSEXT _COPY _CASE_DIRECT _CASE_DIRECT_BYTE 
-  _CASE_CHECKED _CASE_CHECKED_BYTE _CASE_SEARCH _CASE_SEARCH_BYTE 
-  _CASE_SEARCH_8 _CASE_SEARCH_8_BYTE _FCALL _FPCMP 
 pixels.c.o:
   display 
 util.c.o:
-  clockSet 
-sci.c.o:
-  sendByteSCI receiveByteSCI 
-NOT USED VARIABLES
-STDLIB.C.o (ansisi.lib):
-  channels errno 
-rtshc12.c.o (ansisi.lib):
-  _PowOfTwo_8 _PowOfTwo_16 _PowOfTwo_32 errno 
+  clockSet shipSum matrixBuild 
 
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xCD7B ---- SIZE       4 ---
+------- ROM-ADDRESS: 0xC8D8 ---- SIZE       4 ---
 Filling bytes inserted
- 00011103
-------- ROM-ADDRESS: 0xCD7F ---- RAM-ADDRESS: 0x1103 ---- SIZE       1 ---
-Name of initialized Object : seed:3
+ 00031109
+------- ROM-ADDRESS: 0xC8DC ---- RAM-ADDRESS: 0x1109 ---- SIZE       3 ---
+Name of initialized Object : defense:9
+ 010101
+------- ROM-ADDRESS: 0xC8DF ---- SIZE       4 ---
+Filling bytes inserted
+ 00041123
+------- ROM-ADDRESS: 0xC8E3 ---- RAM-ADDRESS: 0x1123 ---- SIZE       4 ---
+Name of initialized Object : defense:35
+ 09010101
+------- ROM-ADDRESS: 0xC8E7 ---- SIZE       4 ---
+Filling bytes inserted
+ 00091136
+------- ROM-ADDRESS: 0xC8EB ---- RAM-ADDRESS: 0x1136 ---- SIZE       1 ---
+Name of initialized Object : defense:54
  01
-------- ROM-ADDRESS: 0xCD80 ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xC8EC ---- SIZE       7 ---
+Filling bytes inserted
+ 0000000000 0000
+------- ROM-ADDRESS: 0xC8F3 ---- RAM-ADDRESS: 0x113E ---- SIZE       1 ---
+Name of initialized Object : defense:62
+ 01
+------- ROM-ADDRESS: 0xC8F4 ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -1924,9 +1893,9 @@ OBJECT-DEPENDENCIES SECTION
 ---------------------------------------------------------------------------------------------
 Init                      USES _startupData 
 _Startup                  USES __SEG_END_SSTACK Init main 
-main                      USES enableLEDs _DDRH lcdInit configureSCI 
-                                matrixBuild main dispLCD hexKeypad displayBoard 
-rand                      USES seed _LDIVS _LMODS _LMULS16x32 
+main                      USES enableLEDs _DDRH lcdInit configureSCI _PTH main 
+                                msDelay dispLCD hexKeypad sendByteSCI receiveByteSCI 
+                                _PORTAB displayBoard defense 
 sendPixel                 USES sendByte 
 displayBoard              USES sendPixel msDelay 
 sendByte                  USES _PORTAB 
@@ -1936,12 +1905,9 @@ COMWRT4                   USES _PORTK msDelay
 DATWRT4                   USES msDelay _PORTK 
 lcdInit                   USES _DDRK COMWRT4 msDelay 
 dispLCD                   USES COMWRT4 dispLCD DATWRT4 
-matrixBuild               USES rand matrixBuild shipSum 
 configureSCI              USES _DDRS _SCI0BD _SCI0CR1 _SCI0CR2 
-_LMULS16x32               USES _LNEG 
-_LDIVS                    USES _NEG_P _lDivMod 
-_LMODS                    USES _NEG_P _lDivMod 
-_Vector_5                 USES displayBoard 
+sendByteSCI               USES _SCI0SR1 _SCI0DRL 
+receiveByteSCI            USES _SCI0SR1 _SCI0DRL 
 
 *********************************************************************************************
 DEPENDENCY TREE
@@ -1962,28 +1928,8 @@ DEPENDENCY TREE
  |  |     
  |  +- configureSCI        
  |  |    
- |  +- matrixBuild         
- |  |  | 
- |  |  +- rand                
- |  |  |  | 
- |  |  |  +- _LDIVS              
- |  |  |  |  | 
- |  |  |  |  +- _NEG_P              
- |  |  |  |  |    
- |  |  |  |  +- _lDivMod            
- |  |  |  |       
- |  |  |  +- _LMODS              
- |  |  |  |  | 
- |  |  |  |  +- _NEG_P               (see above)
- |  |  |  |  |  
- |  |  |  |  +- _lDivMod             (see above)
- |  |  |  |     
- |  |  |  +- _LMULS16x32         
- |  |  |     | 
- |  |  |     +- _LNEG               
- |  |  |          
- |  |  +- shipSum             
- |  |       
+ |  +- msDelay              (see above)
+ |  |  
  |  +- dispLCD             
  |  |  | 
  |  |  +- COMWRT4              (see above)
@@ -1996,6 +1942,10 @@ DEPENDENCY TREE
  |  |  | 
  |  |  +- msDelay              (see above)
  |  |     
+ |  +- sendByteSCI         
+ |  |    
+ |  +- receiveByteSCI      
+ |  |    
  |  +- displayBoard        
  |     | 
  |     +- sendPixel           
@@ -2010,16 +1960,12 @@ DEPENDENCY TREE
     |    
     +- main                 (see above)
        
- _Vector_5           
- | 
- +- displayBoard         (see above)
-    
 *********************************************************************************************
 STATISTIC SECTION
 ---------------------------------------------------------------------------------------------
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 6
-Total size of all blocks to be downloaded: 3462
+Number of blocks to be downloaded: 5
+Total size of all blocks to be downloaded: 2296
 
