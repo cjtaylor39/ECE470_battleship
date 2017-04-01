@@ -6,6 +6,9 @@
 #define RS 0x01
 #define EN 0x02
 
+//HexKeypad MACROS
+//#define UP
+//#define DOWN
 
 
 //Utility Assembly Functions---------------------------------------------------
@@ -36,12 +39,12 @@ extern char hexKeypad(void);
 
 extern void COMWRT4(unsigned char);
 extern void DATWRT4(unsigned char);
-void dispLCD(char);
-void lcdInit(void);
+extern void dispLCD(char);
+extern void lcdInit(void);
 
-//extern void lcdInit(void);
+extern void matrixBuild(char* ptr_large, char* ptr_small);
+extern int shipSum(char* ptr, int row, int col, char size, char orientation);
 
-//extern void dispLCD(unsigned char);
 
 
 

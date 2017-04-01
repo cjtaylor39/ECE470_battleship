@@ -1,5 +1,5 @@
 *** EVALUATION ***
-PROGRAM "C:\Users\Chris\Documents\Current_Classes\ECE470\project\battleship\bin\Project.abs"
+PROGRAM "C:\Users\Chris\Documents\Current_Classes\ECE470\project\HCS12Battleship\battleship\bin\Project.abs"
 
 *********************************************************************************************
 TARGET SECTION
@@ -13,29 +13,33 @@ Linker      : SmartLinker V-5.0.40 Build 10203, Jul 23 2010
 FILE SECTION
 ---------------------------------------------------------------------------------------------
 mc9s12dg256.c.o                         Model: SMALL,         Lang: ANSI-C
-util.asm.o                              Model: SMALL,         Lang: Assembler
 main.c.o                                Model: SMALL,         Lang: ANSI-C
 Start12.c.o                             Model: SMALL,         Lang: ANSI-C
+pixels.c.o                              Model: SMALL,         Lang: ANSI-C
+util.c.o                                Model: SMALL,         Lang: ANSI-C
+sci.c.o                                 Model: SMALL,         Lang: ANSI-C
 
 *********************************************************************************************
 STARTUP SECTION
 ---------------------------------------------------------------------------------------------
 Entry point: 0xC029 (_Startup)
-_startupData is allocated at 0xC031 and uses 6 Bytes
+_startupData is allocated at 0xC03B and uses 6 Bytes
 extern struct _tagStartup {
-  unsigned nofZeroOut     0
-  _Copy    *toCopyDownBeg 0xC0B7
+  unsigned nofZeroOut     1
+  _Range   pZeroOut       0x1100     64
+  _Copy    *toCopyDownBeg 0xC7F5
 } _startupData;
 
 *********************************************************************************************
 SECTION-ALLOCATION SECTION
 Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
-.init                             49     R     0xC000     0xC030   ROM_C000
-.startData                        10     R     0xC031     0xC03A   ROM_C000
-.text                             48     R     0xC03B     0xC06A   ROM_C000
-.copy                              2     R     0xC0B7     0xC0B8   ROM_C000
+.init                             59     R     0xC000     0xC03A   ROM_C000
+.startData                        10     R     0xC03B     0xC044   ROM_C000
+.text                           1968     R     0xC045     0xC7F4   ROM_C000
+.copy                             30     R     0xC7F5     0xC812   ROM_C000
 .stack                           256   R/W     0x1000     0x10FF   RAM
+.data                             64   R/W     0x1100     0x113F   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
 .abs_section_a                     1   N/I        0xA        0xA   .absSeg2
@@ -377,12 +381,11 @@ Section Name                    Size  Type     From       To       Segment
 .abs_section_17e                   2   N/I      0x17E      0x17F   .absSeg338
 .abs_section_2ae                   2   N/I      0x2AE      0x2AF   .absSeg339
 .abs_section_2be                   2   N/I      0x2BE      0x2BF   .absSeg340
-util.asm._SEC000000               76     R     0xC06B     0xC0B6   ROM_C000
 .vectSeg341_vect                   2     R     0xFFFE     0xFFFF   .vectSeg341
 
 Summary of section sizes per section type:
-READ_ONLY (R):          BB (dec:      187)
-READ_WRITE (R/W):      100 (dec:      256)
+READ_ONLY (R):         815 (dec:     2069)
+READ_WRITE (R/W):      140 (dec:      320)
 NO_INIT (N/I):         190 (dec:      400)
 
 *********************************************************************************************
@@ -424,8 +427,8 @@ MODULE:                 -- mc9s12dg256.c.o --
      _BKP1H                                      2E       1       1       0   .abs_section_2e
      _BKP1L                                      2F       1       1       0   .abs_section_2f
      _PPAGE                                      30       1       1       0   .abs_section_30
-     _PORTK                                      32       1       1       0   .abs_section_32
-     _DDRK                                       33       1       1       0   .abs_section_33
+     _PORTK                                      32       1       1      14   .abs_section_32
+     _DDRK                                       33       1       1       1   .abs_section_33
      _SYNR                                       34       1       1       0   .abs_section_34
      _REFDV                                      35       1       1       0   .abs_section_35
      _CRGFLG                                     37       1       1       0   .abs_section_37
@@ -473,23 +476,23 @@ MODULE:                 -- mc9s12dg256.c.o --
      _PWMSCLA                                    A8       1       1       0   .abs_section_a8
      _PWMSCLB                                    A9       1       1       0   .abs_section_a9
      _PWMSDN                                     C4       1       1       0   .abs_section_c4
-     _SCI0CR1                                    CA       1       1       0   .abs_section_ca
-     _SCI0CR2                                    CB       1       1       0   .abs_section_cb
-     _SCI0SR1                                    CC       1       1       0   .abs_section_cc
+     _SCI0CR1                                    CA       1       1       1   .abs_section_ca
+     _SCI0CR2                                    CB       1       1       1   .abs_section_cb
+     _SCI0SR1                                    CC       1       1       2   .abs_section_cc
      _SCI0SR2                                    CD       1       1       0   .abs_section_cd
      _SCI0DRH                                    CE       1       1       0   .abs_section_ce
-     _SCI0DRL                                    CF       1       1       0   .abs_section_cf
+     _SCI0DRL                                    CF       1       1       2   .abs_section_cf
      _SCI1CR1                                    D2       1       1       0   .abs_section_d2
      _SCI1CR2                                    D3       1       1       0   .abs_section_d3
      _SCI1SR1                                    D4       1       1       0   .abs_section_d4
      _SCI1SR2                                    D5       1       1       0   .abs_section_d5
      _SCI1DRH                                    D6       1       1       0   .abs_section_d6
      _SCI1DRL                                    D7       1       1       0   .abs_section_d7
-     _SPI0CR1                                    D8       1       1       1   .abs_section_d8
-     _SPI0CR2                                    D9       1       1       1   .abs_section_d9
-     _SPI0BR                                     DA       1       1       1   .abs_section_da
-     _SPI0SR                                     DB       1       1       2   .abs_section_db
-     _SPI0DR                                     DD       1       1       1   .abs_section_dd
+     _SPI0CR1                                    D8       1       1       0   .abs_section_d8
+     _SPI0CR2                                    D9       1       1       0   .abs_section_d9
+     _SPI0BR                                     DA       1       1       0   .abs_section_da
+     _SPI0SR                                     DB       1       1       0   .abs_section_db
+     _SPI0DR                                     DD       1       1       0   .abs_section_dd
      _IBAD                                       E0       1       1       0   .abs_section_e0
      _IBFD                                       E1       1       1       0   .abs_section_e1
      _IBCR                                       E2       1       1       0   .abs_section_e2
@@ -586,11 +589,11 @@ MODULE:                 -- mc9s12dg256.c.o --
      _PPST                                      245       1       1       0   .abs_section_245
      _PTS                                       248       1       1       0   .abs_section_248
      _PTIS                                      249       1       1       0   .abs_section_249
-     _DDRS                                      24A       1       1       0   .abs_section_24a
+     _DDRS                                      24A       1       1       2   .abs_section_24a
      _RDRS                                      24B       1       1       0   .abs_section_24b
      _PERS                                      24C       1       1       0   .abs_section_24c
      _PPSS                                      24D       1       1       0   .abs_section_24d
-     _WOMS                                      24E       1       1       1   .abs_section_24e
+     _WOMS                                      24E       1       1       0   .abs_section_24e
      _PTM                                       250       1       1       0   .abs_section_250
      _PTIM                                      251       1       1       0   .abs_section_251
      _DDRM                                      252       1       1       0   .abs_section_252
@@ -599,9 +602,9 @@ MODULE:                 -- mc9s12dg256.c.o --
      _PPSM                                      255       1       1       0   .abs_section_255
      _WOMM                                      256       1       1       0   .abs_section_256
      _MODRR                                     257       1       1       0   .abs_section_257
-     _PTP                                       258       1       1       0   .abs_section_258
+     _PTP                                       258       1       1       1   .abs_section_258
      _PTIP                                      259       1       1       0   .abs_section_259
-     _DDRP                                      25A       1       1       0   .abs_section_25a
+     _DDRP                                      25A       1       1       1   .abs_section_25a
      _RDRP                                      25B       1       1       0   .abs_section_25b
      _PERP                                      25C       1       1       0   .abs_section_25c
      _PPSP                                      25D       1       1       0   .abs_section_25d
@@ -609,15 +612,15 @@ MODULE:                 -- mc9s12dg256.c.o --
      _PIFP                                      25F       1       1       0   .abs_section_25f
      _PTH                                       260       1       1       0   .abs_section_260
      _PTIH                                      261       1       1       0   .abs_section_261
-     _DDRH                                      262       1       1       0   .abs_section_262
+     _DDRH                                      262       1       1       1   .abs_section_262
      _RDRH                                      263       1       1       0   .abs_section_263
      _PERH                                      264       1       1       0   .abs_section_264
      _PPSH                                      265       1       1       0   .abs_section_265
      _PIEH                                      266       1       1       0   .abs_section_266
      _PIFH                                      267       1       1       0   .abs_section_267
-     _PTJ                                       268       1       1       0   .abs_section_268
+     _PTJ                                       268       1       1       2   .abs_section_268
      _PTIJ                                      269       1       1       0   .abs_section_269
-     _DDRJ                                      26A       1       1       0   .abs_section_26a
+     _DDRJ                                      26A       1       1       2   .abs_section_26a
      _RDRJ                                      26B       1       1       0   .abs_section_26b
      _PERJ                                      26C       1       1       0   .abs_section_26c
      _PPSJ                                      26D       1       1       0   .abs_section_26d
@@ -680,8 +683,8 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXDSR7                                2BB       1       1       0   .abs_section_2bb
      _CAN4TXDLR                                 2BC       1       1       0   .abs_section_2bc
      _CAN4TXTBPR                                2BD       1       1       0   .abs_section_2bd
-     _PORTAB                                      0       2       2       0   .abs_section_0
-     _DDRAB                                       2       2       2       0   .abs_section_2
+     _PORTAB                                      0       2       2      18   .abs_section_0
+     _DDRAB                                       2       2       2       3   .abs_section_2
      _PARTID                                     1A       2       2       0   .abs_section_1a
      _TCNT                                       44       2       2       0   .abs_section_44
      _TC0                                        50       2       2       0   .abs_section_50
@@ -723,7 +726,7 @@ MODULE:                 -- mc9s12dg256.c.o --
      _PWMDTY23                                   BE       2       2       0   .abs_section_be
      _PWMDTY45                                   C0       2       2       0   .abs_section_c0
      _PWMDTY67                                   C2       2       2       0   .abs_section_c2
-     _SCI0BD                                     C8       2       2       0   .abs_section_c8
+     _SCI0BD                                     C8       2       2       2   .abs_section_c8
      _SCI1BD                                     D0       2       2       0   .abs_section_d0
      _ATD1CTL23                                 122       2       2       0   .abs_section_122
      _ATD1CTL45                                 124       2       2       0   .abs_section_124
@@ -739,48 +742,62 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN0TXTSR                                 17E       2       2       0   .abs_section_17e
      _CAN4RXTSR                                 2AE       2       2       0   .abs_section_2ae
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
-MODULE:                 -- util.asm.o --
-- PROCEDURES:
-     LED_enable                                C06B      11      17       1   util.asm._SEC000000
-     sendByte                                  C07C       2       2       0   util.asm._SEC000000
-     next                                      C07E       6       6       0   util.asm._SEC000000
-     back                                      C084       5       5       0   util.asm._SEC000000
-     send1                                     C089      15      21       0   util.asm._SEC000000
-     send0                                     C09E       D      13       0   util.asm._SEC000000
-     msDelay                                   C0AB       1       1       1   util.asm._SEC000000
-     Outer                                     C0AC       3       3       0   util.asm._SEC000000
-     Inner                                     C0AF       8       8       0   util.asm._SEC000000
-- VARIABLES:
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     configureSPI                              C03B       E      14       1   .text       
-     sendByteSPI                               C049       F      15       1   .text       
-     main                                      C058      13      19       1   .text       
+     main                                      C045     22B     555      12   .text       
 - VARIABLES:
+     defense                                   1100      40      64       1   .data       
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
      Init                                      C000      29      41       1   .init       
-     _Startup                                  C029       8       8       0   .init       
+     _Startup                                  C029      12      18       0   .init       
 - VARIABLES:
-     _startupData                              C031       6       6       3   .startData  
+     _startupData                              C03B       6       6       3   .startData  
 - LABELS:
      __SEG_END_SSTACK                          1100       0       0       1               
+MODULE:                 -- pixels.c.o --
+- PROCEDURES:
+     sendPixel                                 C270      12      18       1   .text       
+     displayBoard                              C282      6F     111       4   .text       
+     sendByte                                  C2F1      2F      47       3   .text       
+- VARIABLES:
+MODULE:                 -- util.c.o --
+- PROCEDURES:
+     enableLEDs                                C320      12      18       1   .text       
+     msDelay                                   C332       D      13      13   .text       
+     hexKeypad                                 C33F      D7     215       1   .text       
+     COMWRT4                                   C416      49      73       4   .text       
+     DATWRT4                                   C45F      4A      74       1   .text       
+     lcdInit                                   C4A9      31      49       1   .text       
+     dispLCD                                   C4DA     2F5     757       5   .text       
+- VARIABLES:
+MODULE:                 -- sci.c.o --
+- PROCEDURES:
+     configureSCI                              C7CF      16      22       1   .text       
+     sendByteSCI                               C7E5       9       9       1   .text       
+     receiveByteSCI                            C7EE       7       7       1   .text       
+- VARIABLES:
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12dg256.c.o                            400      0      0
-  util.asm.o                                   0     76      0
-  main.c.o                                     0     48      0
-  Start12.c.o                                  0     49      0
-  other                                      256     12      2
+  main.c.o                                    64    555      0
+  Start12.c.o                                  0     59      0
+  pixels.c.o                                   0    176      0
+  util.c.o                                     0   1199      0
+  sci.c.o                                      0     38      0
+  other                                      256     12     30
 
 *********************************************************************************************
 SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
-  configureSPI sendByteSPI main 
+  main sendPixel displayBoard sendByte enableLEDs msDelay hexKeypad COMWRT4 
+  DATWRT4 lcdInit dispLCD configureSCI sendByteSCI receiveByteSCI 
+SECTION: ".data"
+  defense 
 SECTION: ".init"
   Init _Startup 
 SECTION: ".abs_section_8"
@@ -1465,15 +1482,13 @@ SECTION: ".abs_section_2ae"
   _CAN4RXTSR 
 SECTION: ".abs_section_2be"
   _CAN4TXTSR 
-SECTION: "util.asm._SEC000000"
-  LED_enable sendByte next back send1 send0 msDelay Outer Inner 
 
 *********************************************************************************************
 OBJECT LIST SORTED BY ADDRESS
      Name                                      Addr   hSize   dSize     Ref    Section   RLIB
 ---------------------------------------------------------------------------------------------
-     _PORTAB                                      0       2       2       0   .abs_section_0
-     _DDRAB                                       2       2       2       0   .abs_section_2
+     _PORTAB                                      0       2       2      18   .abs_section_0
+     _DDRAB                                       2       2       2       3   .abs_section_2
      _PORTE                                       8       1       1       0   .abs_section_8
      _DDRE                                        9       1       1       0   .abs_section_9
      _PEAR                                        A       1       1       0   .abs_section_a
@@ -1501,8 +1516,8 @@ OBJECT LIST SORTED BY ADDRESS
      _BKP1H                                      2E       1       1       0   .abs_section_2e
      _BKP1L                                      2F       1       1       0   .abs_section_2f
      _PPAGE                                      30       1       1       0   .abs_section_30
-     _PORTK                                      32       1       1       0   .abs_section_32
-     _DDRK                                       33       1       1       0   .abs_section_33
+     _PORTK                                      32       1       1      14   .abs_section_32
+     _DDRK                                       33       1       1       1   .abs_section_33
      _SYNR                                       34       1       1       0   .abs_section_34
      _REFDV                                      35       1       1       0   .abs_section_35
      _CRGFLG                                     37       1       1       0   .abs_section_37
@@ -1590,13 +1605,13 @@ OBJECT LIST SORTED BY ADDRESS
      _PWMDTY45                                   C0       2       2       0   .abs_section_c0
      _PWMDTY67                                   C2       2       2       0   .abs_section_c2
      _PWMSDN                                     C4       1       1       0   .abs_section_c4
-     _SCI0BD                                     C8       2       2       0   .abs_section_c8
-     _SCI0CR1                                    CA       1       1       0   .abs_section_ca
-     _SCI0CR2                                    CB       1       1       0   .abs_section_cb
-     _SCI0SR1                                    CC       1       1       0   .abs_section_cc
+     _SCI0BD                                     C8       2       2       2   .abs_section_c8
+     _SCI0CR1                                    CA       1       1       1   .abs_section_ca
+     _SCI0CR2                                    CB       1       1       1   .abs_section_cb
+     _SCI0SR1                                    CC       1       1       2   .abs_section_cc
      _SCI0SR2                                    CD       1       1       0   .abs_section_cd
      _SCI0DRH                                    CE       1       1       0   .abs_section_ce
-     _SCI0DRL                                    CF       1       1       0   .abs_section_cf
+     _SCI0DRL                                    CF       1       1       2   .abs_section_cf
      _SCI1BD                                     D0       2       2       0   .abs_section_d0
      _SCI1CR1                                    D2       1       1       0   .abs_section_d2
      _SCI1CR2                                    D3       1       1       0   .abs_section_d3
@@ -1604,11 +1619,11 @@ OBJECT LIST SORTED BY ADDRESS
      _SCI1SR2                                    D5       1       1       0   .abs_section_d5
      _SCI1DRH                                    D6       1       1       0   .abs_section_d6
      _SCI1DRL                                    D7       1       1       0   .abs_section_d7
-     _SPI0CR1                                    D8       1       1       1   .abs_section_d8
-     _SPI0CR2                                    D9       1       1       1   .abs_section_d9
-     _SPI0BR                                     DA       1       1       1   .abs_section_da
-     _SPI0SR                                     DB       1       1       2   .abs_section_db
-     _SPI0DR                                     DD       1       1       1   .abs_section_dd
+     _SPI0CR1                                    D8       1       1       0   .abs_section_d8
+     _SPI0CR2                                    D9       1       1       0   .abs_section_d9
+     _SPI0BR                                     DA       1       1       0   .abs_section_da
+     _SPI0SR                                     DB       1       1       0   .abs_section_db
+     _SPI0DR                                     DD       1       1       0   .abs_section_dd
      _IBAD                                       E0       1       1       0   .abs_section_e0
      _IBFD                                       E1       1       1       0   .abs_section_e1
      _IBCR                                       E2       1       1       0   .abs_section_e2
@@ -1717,11 +1732,11 @@ OBJECT LIST SORTED BY ADDRESS
      _PPST                                      245       1       1       0   .abs_section_245
      _PTS                                       248       1       1       0   .abs_section_248
      _PTIS                                      249       1       1       0   .abs_section_249
-     _DDRS                                      24A       1       1       0   .abs_section_24a
+     _DDRS                                      24A       1       1       2   .abs_section_24a
      _RDRS                                      24B       1       1       0   .abs_section_24b
      _PERS                                      24C       1       1       0   .abs_section_24c
      _PPSS                                      24D       1       1       0   .abs_section_24d
-     _WOMS                                      24E       1       1       1   .abs_section_24e
+     _WOMS                                      24E       1       1       0   .abs_section_24e
      _PTM                                       250       1       1       0   .abs_section_250
      _PTIM                                      251       1       1       0   .abs_section_251
      _DDRM                                      252       1       1       0   .abs_section_252
@@ -1730,9 +1745,9 @@ OBJECT LIST SORTED BY ADDRESS
      _PPSM                                      255       1       1       0   .abs_section_255
      _WOMM                                      256       1       1       0   .abs_section_256
      _MODRR                                     257       1       1       0   .abs_section_257
-     _PTP                                       258       1       1       0   .abs_section_258
+     _PTP                                       258       1       1       1   .abs_section_258
      _PTIP                                      259       1       1       0   .abs_section_259
-     _DDRP                                      25A       1       1       0   .abs_section_25a
+     _DDRP                                      25A       1       1       1   .abs_section_25a
      _RDRP                                      25B       1       1       0   .abs_section_25b
      _PERP                                      25C       1       1       0   .abs_section_25c
      _PPSP                                      25D       1       1       0   .abs_section_25d
@@ -1740,15 +1755,15 @@ OBJECT LIST SORTED BY ADDRESS
      _PIFP                                      25F       1       1       0   .abs_section_25f
      _PTH                                       260       1       1       0   .abs_section_260
      _PTIH                                      261       1       1       0   .abs_section_261
-     _DDRH                                      262       1       1       0   .abs_section_262
+     _DDRH                                      262       1       1       1   .abs_section_262
      _RDRH                                      263       1       1       0   .abs_section_263
      _PERH                                      264       1       1       0   .abs_section_264
      _PPSH                                      265       1       1       0   .abs_section_265
      _PIEH                                      266       1       1       0   .abs_section_266
      _PIFH                                      267       1       1       0   .abs_section_267
-     _PTJ                                       268       1       1       0   .abs_section_268
+     _PTJ                                       268       1       1       2   .abs_section_268
      _PTIJ                                      269       1       1       0   .abs_section_269
-     _DDRJ                                      26A       1       1       0   .abs_section_26a
+     _DDRJ                                      26A       1       1       2   .abs_section_26a
      _RDRJ                                      26B       1       1       0   .abs_section_26b
      _PERJ                                      26C       1       1       0   .abs_section_26c
      _PPSJ                                      26D       1       1       0   .abs_section_26d
@@ -1813,35 +1828,63 @@ OBJECT LIST SORTED BY ADDRESS
      _CAN4TXDLR                                 2BC       1       1       0   .abs_section_2bc
      _CAN4TXTBPR                                2BD       1       1       0   .abs_section_2bd
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
+     defense                                   1100      40      64       1   .data       
      Init                                      C000      29      41       1   .init       
-     _Startup                                  C029       8       8       0   .init       
-     configureSPI                              C03B       E      14       1   .text       
-     sendByteSPI                               C049       F      15       1   .text       
-     main                                      C058      13      19       1   .text       
-     LED_enable                                C06B      11      17       1   util.asm._SEC000000
-     sendByte                                  C07C       2       2       0   util.asm._SEC000000
-     next                                      C07E       6       6       0   util.asm._SEC000000
-     back                                      C084       5       5       0   util.asm._SEC000000
-     send1                                     C089      15      21       0   util.asm._SEC000000
-     send0                                     C09E       D      13       0   util.asm._SEC000000
-     msDelay                                   C0AB       1       1       1   util.asm._SEC000000
-     Outer                                     C0AC       3       3       0   util.asm._SEC000000
-     Inner                                     C0AF       8       8       0   util.asm._SEC000000
+     _Startup                                  C029      12      18       0   .init       
+     main                                      C045     22B     555      12   .text       
+     sendPixel                                 C270      12      18       1   .text       
+     displayBoard                              C282      6F     111       4   .text       
+     sendByte                                  C2F1      2F      47       3   .text       
+     enableLEDs                                C320      12      18       1   .text       
+     msDelay                                   C332       D      13      13   .text       
+     hexKeypad                                 C33F      D7     215       1   .text       
+     COMWRT4                                   C416      49      73       4   .text       
+     DATWRT4                                   C45F      4A      74       1   .text       
+     lcdInit                                   C4A9      31      49       1   .text       
+     dispLCD                                   C4DA     2F5     757       5   .text       
+     configureSCI                              C7CF      16      22       1   .text       
+     sendByteSCI                               C7E5       9       9       1   .text       
+     receiveByteSCI                            C7EE       7       7       1   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
 ---------------------------------------------------------------------------------------------
 NOT USED PROCEDURES
 main.c.o:
-  sendPixel display gradient rainbow displayBoard 
-NOT USED VARIABLES
-main.c.o:
-  board 
+  transition 
+pixels.c.o:
+  display 
+util.c.o:
+  clockSet shipSum matrixBuild 
 
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xC0B7 ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xC7F5 ---- SIZE       4 ---
+Filling bytes inserted
+ 00031109
+------- ROM-ADDRESS: 0xC7F9 ---- RAM-ADDRESS: 0x1109 ---- SIZE       3 ---
+Name of initialized Object : defense:9
+ 010101
+------- ROM-ADDRESS: 0xC7FC ---- SIZE       4 ---
+Filling bytes inserted
+ 00041123
+------- ROM-ADDRESS: 0xC800 ---- RAM-ADDRESS: 0x1123 ---- SIZE       4 ---
+Name of initialized Object : defense:35
+ 09010101
+------- ROM-ADDRESS: 0xC804 ---- SIZE       4 ---
+Filling bytes inserted
+ 00091136
+------- ROM-ADDRESS: 0xC808 ---- RAM-ADDRESS: 0x1136 ---- SIZE       1 ---
+Name of initialized Object : defense:54
+ 01
+------- ROM-ADDRESS: 0xC809 ---- SIZE       7 ---
+Filling bytes inserted
+ 0000000000 0000
+------- ROM-ADDRESS: 0xC810 ---- RAM-ADDRESS: 0x113E ---- SIZE       1 ---
+Name of initialized Object : defense:62
+ 01
+------- ROM-ADDRESS: 0xC811 ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -1850,9 +1893,21 @@ OBJECT-DEPENDENCIES SECTION
 ---------------------------------------------------------------------------------------------
 Init                      USES _startupData 
 _Startup                  USES __SEG_END_SSTACK Init main 
-configureSPI              USES _SPI0BR _SPI0CR1 _SPI0CR2 _WOMS 
-sendByteSPI               USES _SPI0SR _SPI0DR 
-main                      USES LED_enable configureSPI sendByteSPI msDelay 
+main                      USES enableLEDs _DDRH lcdInit configureSCI defense 
+                                displayBoard msDelay dispLCD main hexKeypad sendByteSCI 
+                                receiveByteSCI _PORTAB 
+sendPixel                 USES sendByte 
+displayBoard              USES sendPixel msDelay 
+sendByte                  USES _PORTAB 
+enableLEDs                USES _DDRJ _PTJ _DDRAB _PORTAB 
+hexKeypad                 USES _DDRAB _DDRJ _PTJ _DDRP _PTP _PORTAB msDelay 
+COMWRT4                   USES _PORTK msDelay 
+DATWRT4                   USES msDelay _PORTK 
+lcdInit                   USES _DDRK COMWRT4 msDelay 
+dispLCD                   USES COMWRT4 dispLCD DATWRT4 
+configureSCI              USES _DDRS _SCI0BD _SCI0CR1 _SCI0CR2 
+sendByteSCI               USES _SCI0SR1 _SCI0DRL 
+receiveByteSCI            USES _SCI0SR1 _SCI0DRL 
 
 *********************************************************************************************
 DEPENDENCY TREE
@@ -1861,13 +1916,43 @@ DEPENDENCY TREE
  | 
  +- main                
  |  | 
- |  +- LED_enable          
+ |  +- enableLEDs          
  |  |    
- |  +- configureSPI        
+ |  +- lcdInit             
+ |  |  | 
+ |  |  +- COMWRT4             
+ |  |  |  | 
+ |  |  |  +- msDelay             
+ |  |  |       
+ |  |  +- msDelay              (see above)
+ |  |     
+ |  +- configureSCI        
  |  |    
- |  +- sendByteSPI         
+ |  +- displayBoard        
+ |  |  | 
+ |  |  +- sendPixel           
+ |  |  |  | 
+ |  |  |  +- sendByte            
+ |  |  |       
+ |  |  +- msDelay              (see above)
+ |  |     
+ |  +- msDelay              (see above)
+ |  |  
+ |  +- dispLCD             
+ |  |  | 
+ |  |  +- COMWRT4              (see above)
+ |  |  |  
+ |  |  +- DATWRT4             
+ |  |     | 
+ |  |     +- msDelay              (see above)
+ |  |        
+ |  +- hexKeypad           
+ |  |  | 
+ |  |  +- msDelay              (see above)
+ |  |     
+ |  +- sendByteSCI         
  |  |    
- |  +- msDelay             
+ |  +- receiveByteSCI      
  |       
  +- _Startup            
     | 
@@ -1882,5 +1967,5 @@ STATISTIC SECTION
 ExeFile:
 --------
 Number of blocks to be downloaded: 4
-Total size of all blocks to be downloaded: 187
+Total size of all blocks to be downloaded: 2069
 

@@ -1,5 +1,13 @@
 //Header file containing prototypes and globals for adafruit neopixel 8x8 matrix
 
+//Preccopmiler for displaying
+#define BOAT    1
+#define WATER1  0
+#define WATER2  9
+#define HIT     2
+#define MISS    3
+#define CURSOR  5
+
 //LCD Macros
 #define SWI   5
 
@@ -20,7 +28,8 @@ extern void display(char r, char g, char b);
 // Displays battleship board based on global "board"
 // Arguments:	8bit value for red, 8bit value for green, 8bit value for blue,
 // Return:		none
-extern interrupt SWI void displayBoard(char board[8][8]);
+//extern interrupt SWI void displayBoard(char board[8][8]); //Global
+extern void displayBoard(char board[8][8]);
 
 //ASSEMBLY FUNCTION
 

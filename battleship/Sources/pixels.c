@@ -5,7 +5,6 @@
 #include "pixels.h"
 #include "util.h"
 
-
 //sendPixel--------------------------------------------------------------------
 // Turns specific neopixel specified color
 // Arguments:	8bit value for red, 8bit value for green, 8bit value for blue,
@@ -31,22 +30,30 @@ void display(char r, char g, char b) {
 // Displays battleship board based on global "board"
 // Arguments:	8bit value for red, 8bit value for green, 8bit value for blue,
 // Return:		none
-interrupt SWI void displayBoard(char board[8][8]) {
+//interrupt SWI void displayBoard(char board[8][8]) {
+void displayBoard(char board[8][8]) {
   int i = 0;
   int j = 0;
   for(i = 0; i<8;i++) {
     for(j = 0; j < 8; j++) {
-      if (board[i][j] == 0) {
-        sendPixel(0,0,10);    //water space
+      if (board[i][j] == WATER1) {
+        sendPixel(0,0,10);
       }
-      else if(board[i][j] == 1) {
-        sendPixel(0,0,10);  //boat space  
+      else if(board[i][j] == WATER2) {
+        sendPixel(0,0,10);  
       }
-      else if(board[i][j] == 3) {
-        sendPixel(0,10,0);    //miss space
+      else if(board[i][j] == BOAT) {
+        sendPixel(5,5,5);    
       }
-      else
-        sendPixel(0,2,10);    //hit space  
+      else if(board[i][j] == HIT){
+        sendPixel(10,0,0);   
+      }
+      else if(board[i][j] == MISS){
+        sendPixel(0,10,0);   
+      }
+      else if(board[i][j] == CURSOR){
+        sendPixel(10,10,0);    
+      }
     }
   }
   msDelay(5);

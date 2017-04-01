@@ -3,6 +3,7 @@
 #include <hidef.h>      /* common defines and macros */
 #include "derivative.h"      /* derivative-specific definitions */
 #include "util.h"
+#include <stdlib.h>
 #include "mc9s12dg256.h"
 
 //enableLEDs--------------------------------------------------------------------
@@ -306,3 +307,117 @@ void dispLCD(unsigned char option){
         
      }
 }
+
+int shipSum(char* ptr, int row, int col, char size, char orientation) {
+	char sum=0;
+	int k = 0;	
+	if (orientation == 0) { 	              	//horizontal		
+		for (k = col; k < col + size; k++) {
+		   sum+=*(ptr+10*row+k);
+		}
+	}
+	else {                                    // vertical
+		for (k = row; k<row + size; k++) {
+	    sum+=*(ptr+10*k+col);
+		}
+	}
+	return sum;
+
+}
+                                      
+void matrixBuild(char* ptr_large, char* ptr_small) {
+	int row=0; int col=0;char ssum=1; 
+	char i = 0;	int r = 0; int c = 0;
+	char max = 7;   //random max number used for testing
+	char shipsize[4] = {4,3,3,2};
+  int orientation = 0;
+  char keypress = 0;
+  
+  //------ to be implemented on the board with the LED grid!!------
+  
+  /*while(keypress !=5){ 
+   r=rand();
+   r+=r;
+   keypress = hexKeypad();
+   msDelay(750);
+  }*/
+  
+  for (c=0;c<max;c++){
+     	r=rand();
+      r+=r;  
+    }
+	
+	for (i = 0; i < 4; i++) {		
+	           	                          
+	    	orientation = rand();  //DO NOT ASK WHY ABOUT THE FOLLOWING TWO LINES	                  
+        orientation +=2*orientation;
+        orientation =orientation%2;
+
+    	//---------Horizontal-----------------------------------------
+    		if (orientation == 0) {
+    		     ssum = 1;
+          		while (ssum != 0) { 							//ensure ship in legal spot - not next to other ship
+        				row = (rand()%8)+1;
+        				col = rand()%(8 - shipsize[i]+1)+1;	            //ship has to fit n  to check if ship
+        				ssum = shipSum(ptr_large, row, col, shipsize[i], orientation);
+        			}         
+        			
+        	//----- pass this point it is allowed to place a ship
+	          	for (r = row - 1; r < row + 2; r++) {
+          				for (c = col - 1; c < col + shipsize[i] + 1; c++) {
+  					
+      				    	if ((r == row) & (c > col - 1) & (c < col + shipsize[i])) {
+                    *(ptr_large+r*10+c)=1;
+        						
+        						}
+        						else {
+        						*(ptr_large+r*10+c)=9;
+    						}
+    					
+  					}
+				}
+  }
+    //---------VERTICAL----------------------------------------------
+		else {	
+		
+          ssum = 1;
+    			while (ssum != 0) { 							//ensure ship in legal spot - not next to other ship
+    					        										// fixing if exceeded
+    				col = rand()%8+1;
+    				row = rand()%(8 - shipsize[i])+1;	            //ship has to fit n  to check if ship
+    				ssum = shipSum(ptr_large, row, col, shipsize[i], orientation);
+    			}         
+    				//----- pass this point it is allowed to place a ship
+			
+          	for (r = row - 1; r < row + shipsize[i] + 1; r++) {
+	          for (c = col - 1; c < col + 2; c++) {
+  						if ((r > row-1) && (c == col) && (r < row + shipsize[i])) {
+  						
+  						  *(ptr_large+r*10+c)=1;
+  						}
+  						else {
+  							*(ptr_large+r*10+c)=9;
+  						}
+  					
+  				}
+  			}
+				
+			}   
+		}
+		
+		//CROP---------------------------------------
+		//	converting large matrix into small one
+  	for (r = 1; r < 9; r++) {
+		//temp_cols = 0;
+		for (c = 1; c < 9; c++) {
+			
+			*ptr_small=*(ptr_large+10*r+c) ;
+			
+			ptr_small++;
+			//defense_board_p1[temp_rows][temp_cols] = defense_board_p1_large[p][q];
+			//temp_cols ++;
+		}
+		//temp_rows++;       
+	}  
+		
+	}  
