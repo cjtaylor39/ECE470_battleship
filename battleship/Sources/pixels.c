@@ -31,7 +31,8 @@ void display(char r, char g, char b) {
 // Displays battleship board based on global "board"
 // Arguments:	8bit value for red, 8bit value for green, 8bit value for blue,
 // Return:		none
-interrupt SWI void displayBoard(char board[8][8]) {
+//interrupt SWI void displayBoard(char board[8][8]) {
+void displayBoard(char board[8][8]) {
   int i = 0;
   int j = 0;
   for(i = 0; i<8;i++) {
@@ -40,13 +41,17 @@ interrupt SWI void displayBoard(char board[8][8]) {
         sendPixel(0,0,10);    //water space
       }
       else if(board[i][j] == 1) {
-        sendPixel(0,0,10);  //boat space  
+        sendPixel(5,5,5);  //boat space  
       }
       else if(board[i][j] == 3) {
         sendPixel(0,10,0);    //miss space
       }
-      else
-        sendPixel(0,2,10);    //hit space  
+      else if(board[i][j] == 5) {     //display while chosing the attack location
+        sendPixel(10,0,0);            //miss space
+      }
+      else {
+        sendPixel(0,2,10);
+        }   //hit space  
     }
   }
   msDelay(5);
@@ -60,7 +65,7 @@ interrupt SWI void displayBoard(char board[8][8]) {
 // Arguments:	number of ms to be delayed
 // Return:		none
 void sendByte(char bite){
-	__asm {                   ;B contains the char to be sent out serially   		
+__asm {                   ;B contains the char to be sent out serially   		
               LDAA #8 		  ;Count of bits
       next:   CMPB #0    	  ;Bring B back into focus for CCR	
               BMI send1     ;Check if MSB is 0 or 1	
@@ -100,5 +105,5 @@ void sendByte(char bite){
               ;After RTS and assuming we are entering another
               ;senbit() we have a minimum of 669ns low pulse which
               ;meets the timing requirement between bits
-	}
+	}      
 }
