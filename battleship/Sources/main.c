@@ -175,8 +175,8 @@ void main(void){
          sendByteSCI(send_coord);
          msDelay(500);
          hit_miss = receiveByteSCI();
+         PORTB = hit_miss;
          msDelay(500);
-         PORTB |= 0x50;
          //LCD displays hit/miss/gg
          if (hit_miss == MISS) {
             attack[x][y] = HIT;

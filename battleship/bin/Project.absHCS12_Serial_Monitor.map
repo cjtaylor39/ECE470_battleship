@@ -27,7 +27,7 @@ _startupData is allocated at 0xC03B and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
   _Range   pZeroOut       0x1100     192
-  _Copy    *toCopyDownBeg 0xC90A
+  _Copy    *toCopyDownBeg 0xC909
 } _startupData;
 
 *********************************************************************************************
@@ -36,8 +36,8 @@ Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
 .init                             59     R     0xC000     0xC03A   ROM_C000
 .startData                        10     R     0xC03B     0xC044   ROM_C000
-.text                           2245     R     0xC045     0xC909   ROM_C000
-.copy                            159     R     0xC90A     0xC9A8   ROM_C000
+.text                           2244     R     0xC045     0xC908   ROM_C000
+.copy                            159     R     0xC909     0xC9A7   ROM_C000
 .stack                           256   R/W     0x1000     0x10FF   RAM
 .data                            192   R/W     0x1100     0x11BF   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
@@ -384,7 +384,7 @@ Section Name                    Size  Type     From       To       Segment
 .vectSeg341_vect                   2     R     0xFFFE     0xFFFF   .vectSeg341
 
 Summary of section sizes per section type:
-READ_ONLY (R):         9AB (dec:     2475)
+READ_ONLY (R):         9AA (dec:     2474)
 READ_WRITE (R/W):      1C0 (dec:      448)
 NO_INIT (N/I):         190 (dec:      400)
 
@@ -744,7 +744,7 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     main                                      C045     33E     830      26   .text       
+     main                                      C045     33D     829      26   .text       
 - VARIABLES:
      defense                                   1100      40      64       5   .data       
      win                                       1140      40      64       1   .data       
@@ -759,25 +759,25 @@ MODULE:                 -- Start12.c.o --
      __SEG_END_SSTACK                          1100       0       0       1               
 MODULE:                 -- pixels.c.o --
 - PROCEDURES:
-     sendPixel                                 C383      12      18       1   .text       
-     displayBoard                              C395      71     113       6   .text       
-     sendByte                                  C406      2F      47       3   .text       
+     sendPixel                                 C382      12      18       1   .text       
+     displayBoard                              C394      71     113       6   .text       
+     sendByte                                  C405      2F      47       3   .text       
 - VARIABLES:
 MODULE:                 -- util.c.o --
 - PROCEDURES:
-     enableLEDs                                C435      12      18       1   .text       
-     msDelay                                   C447       D      13      16   .text       
-     hexKeypad                                 C454      D7     215       1   .text       
-     COMWRT4                                   C52B      49      73       4   .text       
-     DATWRT4                                   C574      4A      74       1   .text       
-     lcdInit                                   C5BE      31      49       1   .text       
-     dispLCD                                   C5EF     2F5     757       6   .text       
+     enableLEDs                                C434      12      18       1   .text       
+     msDelay                                   C446       D      13      16   .text       
+     hexKeypad                                 C453      D7     215       1   .text       
+     COMWRT4                                   C52A      49      73       4   .text       
+     DATWRT4                                   C573      4A      74       1   .text       
+     lcdInit                                   C5BD      31      49       1   .text       
+     dispLCD                                   C5EE     2F5     757       6   .text       
 - VARIABLES:
 MODULE:                 -- sci.c.o --
 - PROCEDURES:
-     configureSCI                              C8E4      16      22       1   .text       
-     sendByteSCI                               C8FA       9       9       3   .text       
-     receiveByteSCI                            C903       7       7       2   .text       
+     configureSCI                              C8E3      16      22       1   .text       
+     sendByteSCI                               C8F9       9       9       3   .text       
+     receiveByteSCI                            C902       7       7       2   .text       
 - VARIABLES:
 
 *********************************************************************************************
@@ -785,7 +785,7 @@ MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12dg256.c.o                            400      0      0
-  main.c.o                                   192    830      0
+  main.c.o                                   192    829      0
   Start12.c.o                                  0     59      0
   pixels.c.o                                   0    178      0
   util.c.o                                     0   1199      0
@@ -1835,20 +1835,20 @@ OBJECT LIST SORTED BY ADDRESS
      lose                                      1180      40      64       1   .data       
      Init                                      C000      29      41       1   .init       
      _Startup                                  C029      12      18       0   .init       
-     main                                      C045     33E     830      26   .text       
-     sendPixel                                 C383      12      18       1   .text       
-     displayBoard                              C395      71     113       6   .text       
-     sendByte                                  C406      2F      47       3   .text       
-     enableLEDs                                C435      12      18       1   .text       
-     msDelay                                   C447       D      13      16   .text       
-     hexKeypad                                 C454      D7     215       1   .text       
-     COMWRT4                                   C52B      49      73       4   .text       
-     DATWRT4                                   C574      4A      74       1   .text       
-     lcdInit                                   C5BE      31      49       1   .text       
-     dispLCD                                   C5EF     2F5     757       6   .text       
-     configureSCI                              C8E4      16      22       1   .text       
-     sendByteSCI                               C8FA       9       9       3   .text       
-     receiveByteSCI                            C903       7       7       2   .text       
+     main                                      C045     33D     829      26   .text       
+     sendPixel                                 C382      12      18       1   .text       
+     displayBoard                              C394      71     113       6   .text       
+     sendByte                                  C405      2F      47       3   .text       
+     enableLEDs                                C434      12      18       1   .text       
+     msDelay                                   C446       D      13      16   .text       
+     hexKeypad                                 C453      D7     215       1   .text       
+     COMWRT4                                   C52A      49      73       4   .text       
+     DATWRT4                                   C573      4A      74       1   .text       
+     lcdInit                                   C5BD      31      49       1   .text       
+     dispLCD                                   C5EE     2F5     757       6   .text       
+     configureSCI                              C8E3      16      22       1   .text       
+     sendByteSCI                               C8F9       9       9       3   .text       
+     receiveByteSCI                            C902       7       7       2   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -1864,48 +1864,48 @@ util.c.o:
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xC90A ---- SIZE       4 ---
+------- ROM-ADDRESS: 0xC909 ---- SIZE       4 ---
 Filling bytes inserted
  00031109
-------- ROM-ADDRESS: 0xC90E ---- RAM-ADDRESS: 0x1109 ---- SIZE       3 ---
+------- ROM-ADDRESS: 0xC90D ---- RAM-ADDRESS: 0x1109 ---- SIZE       3 ---
 Name of initialized Object : defense:9
  010101
-------- ROM-ADDRESS: 0xC911 ---- SIZE       4 ---
+------- ROM-ADDRESS: 0xC910 ---- SIZE       4 ---
 Filling bytes inserted
  00041123
-------- ROM-ADDRESS: 0xC915 ---- RAM-ADDRESS: 0x1123 ---- SIZE       4 ---
+------- ROM-ADDRESS: 0xC914 ---- RAM-ADDRESS: 0x1123 ---- SIZE       4 ---
 Name of initialized Object : defense:35
  09010101
-------- ROM-ADDRESS: 0xC919 ---- SIZE       4 ---
+------- ROM-ADDRESS: 0xC918 ---- SIZE       4 ---
 Filling bytes inserted
  008A1136
-------- ROM-ADDRESS: 0xC91D ---- RAM-ADDRESS: 0x1136 ---- SIZE       1 ---
+------- ROM-ADDRESS: 0xC91C ---- RAM-ADDRESS: 0x1136 ---- SIZE       1 ---
 Name of initialized Object : defense:54
  01
-------- ROM-ADDRESS: 0xC91E ---- SIZE       7 ---
+------- ROM-ADDRESS: 0xC91D ---- SIZE       7 ---
 Filling bytes inserted
  0000000000 0000
-------- ROM-ADDRESS: 0xC925 ---- RAM-ADDRESS: 0x113E ---- SIZE       1 ---
+------- ROM-ADDRESS: 0xC924 ---- RAM-ADDRESS: 0x113E ---- SIZE       1 ---
 Name of initialized Object : defense:62
  01
-------- ROM-ADDRESS: 0xC926 ---- SIZE       1 ---
+------- ROM-ADDRESS: 0xC925 ---- SIZE       1 ---
 Filling bytes inserted
  00
-------- ROM-ADDRESS: 0xC927 ---- RAM-ADDRESS: 0x1140 ---- SIZE      64 ---
+------- ROM-ADDRESS: 0xC926 ---- RAM-ADDRESS: 0x1140 ---- SIZE      64 ---
 Name of initialized Object : win
  0303030303 0303030303 0103030301
  0303030103 0303010303 0301030303
  0103030301 0301030103 0303010103
  0101030303 0103030301 0303030303
  03030303
-------- ROM-ADDRESS: 0xC967 ---- RAM-ADDRESS: 0x1180 ---- SIZE      64 ---
+------- ROM-ADDRESS: 0xC966 ---- RAM-ADDRESS: 0x1180 ---- SIZE      64 ---
 Name of initialized Object : lose
  0202020202 0202020201 0202020202
  0202010202 0202020202 0102020202
  0202020102 0202020202 0201020202
  0202020201 0101010101 0202020202
  02020202
-------- ROM-ADDRESS: 0xC9A7 ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xC9A6 ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -1987,6 +1987,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 5
-Total size of all blocks to be downloaded: 2475
+Number of blocks to be downloaded: 4
+Total size of all blocks to be downloaded: 2474
 
