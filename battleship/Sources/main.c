@@ -6,7 +6,7 @@
 
 #include "sci.h"
 
-#define DUMMY 0x05
+#define SHIPCNT 1
 
 
 void transition(void){
@@ -42,6 +42,25 @@ char defense[8][8] = {0,0,0,0,0,0,0,0,
                      0,0,0,0,0,0,1,0,
                      0,0,0,0,0,0,1,0};
 
+char win[8][8] =  {3,3,3,3,3,3,3,3,
+                   3,3,1,3,3,3,1,3,
+                   3,3,1,3,3,3,1,3,
+                   3,3,1,3,3,3,1,3,
+                   3,3,1,3,1,3,1,3,
+                   3,3,1,1,3,1,1,3,
+                   3,3,1,3,3,3,1,3,
+                   3,3,3,3,3,3,3,3};
+
+char lose[8][8] = {2,2,2,2,2,2,2,2,
+                   2,1,2,2,2,2,2,2,
+                   2,1,2,2,2,2,2,2,
+                   2,1,2,2,2,2,2,2,
+                   2,1,2,2,2,2,2,2,
+                   2,1,2,2,2,2,2,2,
+                   2,1,1,1,1,1,1,2,
+                   2,2,2,2,2,2,2,2,};
+
+                     
 void main(void){
   
   //Matricies
@@ -60,7 +79,7 @@ void main(void){
   
   char x_defense = 0;
   char y_defense = 0;
-  char hit_miss = 0;    //byte returned from other board signifying hit/miss/gameover
+  unsigned char hit_miss = 0;    //byte returned from other board signifying hit/miss/gameover
   
   //char* def_ptr_small;
   //char* def_ptr_large;
@@ -93,131 +112,150 @@ void main(void){
   displayBoard(defense);
   msDelay(5000);
   //This is your board on LCD
-  
-  while(state == ATTACK){
-  
-      //LCD says it is your turn
-      dispLCD(1);
-     
-      //display attack board
-      save1 = attack[x][y];  // save what was in the location we will replace with 5
-      attack [x][y] = 5;    // assign the value of a pointer (different collor) to the matrix
-      displayBoard(attack);    
-      
-      //Selecting coordinate to attack
-      while(1){
+  while(1){
+    
+    while(state == ATTACK){
+    
+        //LCD says it is your turn
+        dispLCD(1);
+       
+        //display attack board
+        save1 = attack[x][y];  // save what was in the location we will replace with 5
+        attack [x][y] = 5;    // assign the value of a pointer (different collor) to the matrix
+        displayBoard(attack);    
+        
+        //Selecting coordinate to attack
+        while(1){
+             
+           select = hexKeypad();
            
-         select = hexKeypad();
-         
-         if(select == 2){
-           attack[x][y]=save1;
-             x-= 1;
-             x = x% 8;
-           save1=attack[x][y];
-           attack[x][y]=5;
-           displayBoard(attack);
-         } else if(select == 4){
+           if(select == 2){
              attack[x][y]=save1;
-             y -= 1;
-             y = y% 8;
+               x-= 1;
+               x = x% 8;
              save1=attack[x][y];
              attack[x][y]=5;
-            displayBoard(attack);
-         } else if(select == 6){
-             attack[x][y]=save1;
-             y+= 1;
-             y = y% 8;
-             save1=attack[x][y];
-             attack[x][y]=5;
-           displayBoard(attack);
-         } else if(select == 8){
-             attack[x][y]=save1;
-             x += 1;
-             x = x% 8;
-             save1=attack[x][y];
-             attack[x][y]=5;
-            displayBoard(attack);
-         } else if(select == 5){
-            if(save1!=0){
-            select = 0;
-            } 
-            else {
-              break;
-            }
+             displayBoard(attack);
+           } else if(select == 4){
+               attack[x][y]=save1;
+               y -= 1;
+               y = y% 8;
+               save1=attack[x][y];
+               attack[x][y]=5;
+              displayBoard(attack);
+           } else if(select == 6){
+               attack[x][y]=save1;
+               y+= 1;
+               y = y% 8;
+               save1=attack[x][y];
+               attack[x][y]=5;
+             displayBoard(attack);
+           } else if(select == 8){
+               attack[x][y]=save1;
+               x += 1;
+               x = x% 8;
+               save1=attack[x][y];
+               attack[x][y]=5;
+              displayBoard(attack);
+           } else if(select == 5){
+              if(save1!=0){
+              select = 0;
+              } 
+              else {
+                break;
+              }
+           }
          }
-       }
-      
-      
-       send_coord = x;
-       send_coord <<= 4;
-       send_coord += y;
-       
-       sendByteSCI(send_coord);
-       hit_miss = receiveByteSCI();
-       
-       //LCD displays hit/miss/gg
-       if (hit_miss == HIT) {
-          attack[x][y] = HIT;
-          dispLCD(HIT);
-          my_hit_count++;   
-       }
-       else if(hit_miss == MISS) {
-          attack[x][y] = MISS;
-          dispLCD(MISS);
-       }
-       else {
-        //Display Transmission error on LCD
-        PORTB |= 0xF0;
-        //while(1); 
-       }
-       
-       displayBoard(attack);
-       msDelay(3000);
-       //Your turn to defend
-       
-       if (my_hit_count != 12) { 
-          state = DEFEND;
-       }
-       else { 
-          state = WIN; 
-       }
-  }
-  
-  while(state == DEFEND) {
-    
-    dispLCD(7);
-    displayBoard(defense);
-    dataIn = receiveByteSCI();
-
-    while(dataIn == 0xFF){
-      
-    dataIn = receiveByteSCI();
-    PORTB = dataIn;
+        
+        
+         send_coord = x;
+         send_coord <<= 4;
+         send_coord += y;
+         
+         sendByteSCI(send_coord);
+         msDelay(500);
+         hit_miss = receiveByteSCI();
+         msDelay(500);
+         PORTB |= 0x50;
+         //LCD displays hit/miss/gg
+         if (hit_miss == MISS) {
+            attack[x][y] = HIT;
+            dispLCD(HIT);
+            my_hit_count++;   
+         }
+         else if(hit_miss == HIT) {
+            attack[x][y] = MISS;
+            dispLCD(MISS);
+         }
+         else {
+          //Display Transmission error on LCD
+          PORTB |= 0xF0;
+          attack[x][y] = BOAT;
+          dispLCD(5);
+          
+          //while(1); 
+         }
+         
+         displayBoard(attack);
+         msDelay(3000);
+         //Your turn to defend
+         
+         if (my_hit_count != SHIPCNT) { 
+            state = DEFEND;
+         }
+         else { 
+            state = WIN; 
+         }
     }
-    x_defense = ((dataIn & 0xF0) >> 4);
-    y_defense = (dataIn & 0x0F);
-
-        if ((defense[x_defense][y_defense] == 0) | ((defense[x_defense][y_defense]) == 9)){      // 0 - nothing not hit yet
-			    sendByteSCI(MISS);                                                 // 1 - ship not hit
-          defense[x_defense][y_defense] = MISS;
-                                                 // 2 - MISS
-        } else{                                                  // 3 - ship hit
-        //send 1
-         defense[x_defense][y_defense] = HIT;
-         sendByteSCI(HIT);
-         enemy_hit_count++; 
-         //display LED grid
-        }
-    displayBoard(defense);
-    msDelay(3000);
     
-    if (enemy_hit_count != 12) { 
-          state = DEFEND;
-     }
-     else { 
-        state = WIN; 
-     }
+    while(state == DEFEND) {
       
+      dispLCD(7);
+      displayBoard(defense);
+      
+          PORTB=0x10;
+          dataIn = receiveByteSCI();
+          PORTB=0xE0;
+          /*
+          while(dataIn == 0xFF){
+            
+          dataIn = receiveByteSCI();
+          PORTB = dataIn;
+          }
+          */
+          x_defense = ((dataIn & 0xF0) >> 4);
+          y_defense = (dataIn & 0x0F);
+
+              if ((defense[x_defense][y_defense] == 0) | ((defense[x_defense][y_defense]) == 9)){      // 0 - nothing not hit yet
+      			    sendByteSCI(HIT);                                  // 1 - ship not hit
+                defense[x_defense][y_defense] = MISS;
+                                                                   // 2 - MISS
+              } else{                                             // 3 - ship hit
+              //send 1
+               defense[x_defense][y_defense] = HIT;
+               sendByteSCI(MISS);
+               enemy_hit_count++; 
+               //display LED grid
+              }
+          displayBoard(defense);
+          msDelay(3000);
+          
+          if (enemy_hit_count != SHIPCNT) { 
+            state = ATTACK;
+          }
+           else { 
+              state = LOSE; 
+           }
+            
+    }
+    while(state == WIN){ 
+      displayBoard(win);
+      while(1);
+    }
+    while(state == LOSE){ 
+      displayBoard(lose);
+      while(1);
+    }
   }
 }
 
